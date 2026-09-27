@@ -1,0 +1,35 @@
+<%- include("partials/header", { title: "JobTrail" }) %>
+<h1>Applications</h1>
+
+<form method="post" action="/applications" class="inline">
+  <input name="company" placeholder="Company" required>
+  <input name="role" placeholder="Role" required>
+  <input name="applied_on" type="date" required>
+  <button>Add</button>
+</form>
+
+<table>
+  <tr><th>Company</th><th>Role</th><th>Applied</th><th>Stage</th><th>Next step</th></tr>
+  <% if (apps.length === 0) { %>
+  <tr><td colspan="5">No applications yet. Add your first one above.</td></tr>
+  <% } %>
+  <% for (const app of apps) { %>
+  <tr>
+    <td><%= app.company %></td>
+    <td><%= app.role %></td>
+    <td><%= niceDate(app.appliedOn) %></td>
+    <td>
+      <form method="post" action="/applications/<%= app.id %>/stage" class="inline">
+        <select name="stage">
+          <% for (const s of stages) { %><option value="<%= s %>" <%= s === app.stage ? "selected" : "" %>><%= stageLabel(s) %></option><% } %>
+        </select>
+        <input name="next_step_on" type="date" value="<%= app.nextStepOn ? toIso(app.nextStepOn) : "" %>">
+        <button>Save</button>
+      </form>
+    </td>
+    <td><%= niceDate(app.nextStepOn) %></td>
+  </tr>
+  <% } %>
+</table>
+</body>
+</html>

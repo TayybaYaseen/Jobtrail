@@ -1,0 +1,64 @@
+{
+  "applications": [
+    {
+      "id": 1,
+      "company": "Gwadar Cloud",
+      "role": "Graduate Software Engineer",
+      "source": "manual",
+      "applied_on": "2026-09-01",
+      "stage": "offer",
+      "next_step_on": "2026-11-03",
+      "notes": "Offer deadline"
+    },
+    {
+      "id": 2,
+      "company": "Margalla Tech",
+      "role": "Junior Backend Developer",
+      "source": "manual",
+      "applied_on": "2026-09-14",
+      "stage": "applied",
+      "next_step_on": null,
+      "notes": ""
+    },
+    {
+      "id": 3,
+      "company": "Ravi Systems",
+      "role": "Associate Software Engineer",
+      "source": "linkedin",
+      "applied_on_raw": "09/21/2026",
+      "stage": "interview",
+      "next_step_on": "2026-10-20",
+      "notes": "Technical round"
+    },
+    {
+      "id": 4,
+      "company": "Indus Analytics",
+      "role": "Data Engineer Trainee",
+      "source": "manual",
+      "applied_on": "2026-10-05",
+      "stage": "screening",
+      "next_step_on": "2026-10-23",
+      "notes": "Phone screen with HR"
+    },
+    {
+      "id": 5,
+      "company": "Lahore Logic",
+      "role": "Full-Stack Intern",
+      "source": "linkedin",
+      "applied_on_raw": "10/07/2026",
+      "stage": "screening",
+      "next_step_on": "2026-10-29",
+      "notes": ""
+    },
+    {
+      "id": 6,
+      "company": "Sindh Softworks",
+      "role": "QA Engineer",
+      "source": "manual",
+      "applied_on": "2026-10-08",
+      "stage": "applied",
+      "next_step_on": null,
+      "notes": ""
+    }
+  ]
+}
