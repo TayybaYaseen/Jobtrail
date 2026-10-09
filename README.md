@@ -31,11 +31,25 @@ npm run lint    # ESLint
 
 ## Importing from job sites
 
-Applications imported from LinkedIn keep LinkedIn's date text in
-`applied_on_raw`. JobTrail reads it when it loads the file.
+Applications imported from LinkedIn or Rozee.pk keep the site's own date
+text in `applied_on_raw`. JobTrail reads it when it loads the file.
+
+- LinkedIn exports dates month first: `10/07/2026` is 7 October.
+- Rozee.pk exports dates day first, like we write them here: `09/10/2026` is
+  9 October.
+
+## This week
+
+`/this-week` lists interviews, screens and offer deadlines in the next seven
+days. Every Monday, each copy runs `npm run digest` on a schedule and emails
+what it prints.
+
+`npm run dev:demo` and `npm run digest:demo` pin today to 19 October 2026
+(see `demo.env`), so the sample data always has a week ahead.
 
 ## API
 
 - `GET /api/applications`
 - `POST /api/applications`
 - `POST /api/applications/:id/stage`
+- `GET /api/this-week`

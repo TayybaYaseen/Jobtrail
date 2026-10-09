@@ -10,3 +10,9 @@ export function parseLinkedinDate(text) {
   const [month, day, year] = text.split("/").map(Number);
   return utcDate(year, month, day);
 }
+
+export function parseRozeeDate(text) {
+  // Same format as LinkedIn.
+  const [month, day, year] = text.split("/").map(Number);
+  return utcDate(year, month, day);
+}

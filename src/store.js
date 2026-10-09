@@ -6,7 +6,7 @@
 import fs from "node:fs";
 import { parseIsoDate } from "./dates.js";
 import { AppError } from "./errors.js";
-import { parseLinkedinDate } from "./importers.js";
+import { parseLinkedinDate, parseRozeeDate } from "./importers.js";
 import { makeApplication } from "./models.js";
 import { dataPath } from "./settings.js";
 
@@ -21,6 +21,7 @@ export function saveRecords(records) {
 function appliedOn(record) {
   if (record.applied_on) return parseIsoDate(record.applied_on);
   if (record.source === "linkedin") return parseLinkedinDate(record.applied_on_raw);
+  if (record.source === "rozee") return parseRozeeDate(record.applied_on_raw);
   throw new AppError("UNKNOWN_SOURCE", `Can't read dates from '${record.source}'`, 500);
 }
 

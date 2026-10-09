@@ -1,0 +1,9 @@
+<%- include("partials/header", { title: "This week · JobTrail" }) %>
+<h1>This week</h1>
+<p>Week of <%= niceDate(today) %></p>
+<ul>
+  <% if (lines.length === 0) { %><li>Nothing scheduled this week.</li><% } %>
+  <% for (const line of lines) { %><li><%= line %></li><% } %>
+</ul>
+</body>
+</html>
