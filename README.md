@@ -5,7 +5,11 @@ what's coming up next.
 
 I built this during my own job hunt after graduating, mostly with an AI agent,
 over a couple of weekends. A few friends from my batch asked for a copy, then
-a few more. — Zara
+a few more. Thirty of us use it now. — Zara
+
+**October 2026:** Zara has started a new job and handed JobTrail over. The
+Session 3 cohort maintains it now. See `TICKETS.md` and `HANDOUT.md`.
+Everything users have asked for is in `docs/WISHLIST.md`.
 
 ## Run it
 

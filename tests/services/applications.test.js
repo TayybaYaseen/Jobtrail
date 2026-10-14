@@ -28,4 +28,8 @@ describe("applications", () => {
   test("an unknown stage is refused", () => {
     expect(() => moveStage(6, "ghosted")).toThrow(/is not one of/);
   });
+
+  test("ticket #103: newest application first", () => {
+    expect(newestFirst(loadApplications())[0].company).toBe("Thar Digital");
+  });
 });

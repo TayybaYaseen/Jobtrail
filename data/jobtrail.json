@@ -36,9 +36,9 @@
       "role": "Data Engineer Trainee",
       "source": "manual",
       "applied_on": "2026-10-05",
-      "stage": "screening",
-      "next_step_on": "2026-10-23",
-      "notes": "Phone screen with HR"
+      "stage": "interview",
+      "next_step_on": null,
+      "notes": "Passed the phone screen! Interview date TBC"
     },
     {
       "id": 5,
@@ -56,6 +56,26 @@
       "role": "QA Engineer",
       "source": "manual",
       "applied_on": "2026-10-08",
+      "stage": "applied",
+      "next_step_on": null,
+      "notes": ""
+    },
+    {
+      "id": 7,
+      "company": "Kohsar Labs",
+      "role": "Python Developer",
+      "source": "rozee",
+      "applied_on_raw": "02/10/2026",
+      "stage": "interview",
+      "next_step_on": "2026-10-22",
+      "notes": "Take-home first"
+    },
+    {
+      "id": 8,
+      "company": "Thar Digital",
+      "role": "Junior Software Engineer",
+      "source": "rozee",
+      "applied_on_raw": "09/10/2026",
       "stage": "applied",
       "next_step_on": null,
       "notes": ""
