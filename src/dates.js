@@ -15,3 +15,9 @@ export function parseIsoDate(text) {
 export function toIso(date) {
   return date.toISOString().slice(0, 10);
 }
+
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
+export function daysUntil(day, today) {
+  return Math.round((day.getTime() - today.getTime()) / MS_PER_DAY);
+}

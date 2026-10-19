@@ -1,6 +1,7 @@
 // How dates and stages look on the page.
 
-import { NEXT_STEP_STAGES, daysUntil } from "./services/schedule.js";
+import { daysUntil } from "./dates.js";
+import { NEXT_STEP_STAGES } from "./models.js";
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

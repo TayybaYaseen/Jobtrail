@@ -1,21 +1,17 @@
 // What's coming up: interviews, screens and offer deadlines.
 
+import { daysUntil } from "../dates.js";
 import { niceDate } from "../formatting.js";
+import { NEXT_STEP_STAGES } from "../models.js";
 
-// Stages where there's a next step with a date.
-export const NEXT_STEP_STAGES = ["screening", "interview", "offer"];
-
-const MS_PER_DAY = 24 * 60 * 60 * 1000;
-
-export function daysUntil(day, today) {
-  return Math.round((day.getTime() - today.getTime()) / MS_PER_DAY);
-}
+export { daysUntil, NEXT_STEP_STAGES };
 
 /** Next steps in the coming seven days, soonest first. */
 export function thisWeek(apps, today) {
   const upcoming = [];
   for (const app of apps) {
     if (!NEXT_STEP_STAGES.includes(app.stage)) continue;
+    if (!app.nextStepOn) continue; // no date yet, so it can't be this week
     const days = daysUntil(app.nextStepOn, today);
     if (days >= 0 && days <= 6) upcoming.push(app);
   }

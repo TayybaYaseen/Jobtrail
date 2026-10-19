@@ -12,7 +12,7 @@ export function parseLinkedinDate(text) {
 }
 
 export function parseRozeeDate(text) {
-  // Same format as LinkedIn.
-  const [month, day, year] = text.split("/").map(Number);
+  // Rozee.pk's export writes Pakistani-style dates: day/month/year.
+  const [day, month, year] = text.split("/").map(Number);
   return utcDate(year, month, day);
 }
