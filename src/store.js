@@ -1,7 +1,11 @@
-// JobTrail keeps everything in one JSON file (data/jobtrail.json).
+// Turning stored records into applications.
 //
-// Applications you add by hand store `applied_on` as YYYY-MM-DD. Imported ones
-// keep the job site's own date text in `applied_on_raw`, parsed on load.
+// A record is one application as stored: a database row, or an entry in an
+// old JobTrail JSON file (data/jobtrail.json). Applications you add by hand
+// store `applied_on` as YYYY-MM-DD. Imported ones keep the job site's own date
+// text in `applied_on_raw`, parsed on load.
+//
+// JSON files are only ever read: by `npm run import-json` and the digest.
 
 import fs from "node:fs";
 import { parseIsoDate } from "./dates.js";
@@ -10,12 +14,12 @@ import { parseLinkedinDate, parseRozeeDate } from "./importers.js";
 import { makeApplication } from "./models.js";
 import { dataPath } from "./settings.js";
 
-export function loadRecords() {
-  return JSON.parse(fs.readFileSync(dataPath(), "utf8")).applications;
+export function readJsonRecords(file) {
+  return JSON.parse(fs.readFileSync(file, "utf8")).applications;
 }
 
-export function saveRecords(records) {
-  fs.writeFileSync(dataPath(), JSON.stringify({ applications: records }, null, 2) + "\n");
+export function loadRecords() {
+  return readJsonRecords(dataPath());
 }
 
 function appliedOn(record) {
@@ -25,7 +29,7 @@ function appliedOn(record) {
   throw new AppError("UNKNOWN_SOURCE", `Can't read dates from '${record.source}'`, 500);
 }
 
-function toApplication(record) {
+export function toApplication(record) {
   return makeApplication({
     id: record.id,
     company: record.company,
@@ -38,6 +42,7 @@ function toApplication(record) {
   });
 }
 
+/** Applications from the JSON file. Used by the digest. */
 export function loadApplications() {
   return loadRecords().map(toApplication);
 }

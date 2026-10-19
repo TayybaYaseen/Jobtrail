@@ -5,7 +5,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=22.12"
+    "node": ">=22.13"
   },
   "scripts": {
     "start": "node src/server.js",
@@ -13,6 +13,7 @@
     "dev:demo": "node --env-file=demo.env --watch src/server.js",
     "digest": "node scripts/weekly-digest.js",
     "digest:demo": "node --env-file=demo.env scripts/weekly-digest.js",
+    "import-json": "node scripts/import-json.js",
     "test": "vitest run",
     "lint": "eslint ."
   },
