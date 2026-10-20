@@ -80,13 +80,14 @@ to run my own copy and my applications are never lost or seen by others.
 ## Open questions
 
 - [ ] Is SQLite enough once deployed, or do we move to Postgres in Session 9?
-- [ ] How long should a session last? (Proposal: 30 days.)
+      **For now:** SQLite (`better-sqlite3`). Revisit in Session 9.
+- [x] How long should a session last? **30 days.**
 
 ## Done means
 
-- [ ] Every acceptance criterion has a passing test.
-- [ ] Nothing from "Out of scope" was built.
-- [ ] Existing tests are updated to run as a logged-in test user against a
+- [x] Every acceptance criterion has a passing test.
+- [x] Nothing from "Out of scope" was built.
+- [x] Existing tests are updated to run as a logged-in test user against a
       temporary database, never `data/`.
-- [ ] `data/jobtrail.json` is never written to.
-- [ ] `npm test` and `npm run lint` pass.
+- [x] `data/jobtrail.json` is never written to.
+- [x] `npm test` and `npm run lint` pass.

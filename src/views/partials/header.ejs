@@ -14,6 +14,11 @@
     form.stacked { display: flex; flex-direction: column; gap: 0.6rem; max-width: 20rem; }
     .error { color: #b00020; }
   </style>
+  <script>
+    // Sign up / Log in: disable the button while the form submits, so it can't be sent twice.
+    document.addEventListener("submit", (e) => { if (e.target.matches("form.stacked")) e.submitter?.setAttribute("disabled", ""); });
+    window.addEventListener("pageshow", () => document.querySelectorAll("form.stacked button").forEach((b) => b.removeAttribute("disabled")));
+  </script>
 </head>
 <body>
   <nav><strong>JobTrail</strong> &nbsp;

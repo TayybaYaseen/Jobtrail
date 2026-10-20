@@ -5,7 +5,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { DatabaseSync } from "node:sqlite";
+import Database from "better-sqlite3";
 import { dbPath } from "./settings.js";
 
 const SCHEMA = `
@@ -52,8 +52,8 @@ export function getDb() {
   if (db && openPath === file) return db;
   closeDb();
   fs.mkdirSync(path.dirname(file), { recursive: true });
-  db = new DatabaseSync(file);
-  db.exec("PRAGMA foreign_keys = ON; PRAGMA busy_timeout = 5000;");
+  db = new Database(file, { timeout: 5000 }); // waits up to 5s if another process is writing
+  db.pragma("foreign_keys = ON");
   db.exec(SCHEMA);
   openPath = file;
   return db;
@@ -68,13 +68,5 @@ export function closeDb() {
 /** Runs fn inside a transaction: everything is written, or nothing is. */
 export function transaction(fn) {
   const conn = getDb();
-  conn.exec("BEGIN");
-  try {
-    const result = fn(conn);
-    conn.exec("COMMIT");
-    return result;
-  } catch (err) {
-    conn.exec("ROLLBACK");
-    throw err;
-  }
+  return conn.transaction(() => fn(conn))();
 }

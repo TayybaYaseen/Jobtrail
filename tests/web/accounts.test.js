@@ -32,10 +32,20 @@ describe("1. sign up", () => {
     expect(page.text).not.toContain("Sindh Softworks");
   });
 
-  test("the Sign up page opens without logging in", async () => {
+  test("Log in links to the Sign up form, which opens without logging in (Flow 1)", async () => {
+    const login = await request(app).get("/login");
+    expect(login.status).toBe(200);
+    expect(login.text).toContain('<a href="/signup">Create an account</a>');
     const r = await request(app).get("/signup");
     expect(r.status).toBe(200);
-    expect(r.text).toContain("Sign up");
+    expect(r.text).toContain("<button>Sign up</button>");
+  });
+
+  test("after an error the form keeps the email (Flow 1)", async () => {
+    const signup = await request(app).post("/signup").type("form").send({ email: TEST_EMAIL, password: "another-password" });
+    expect(signup.text).toContain(`value="${TEST_EMAIL}"`);
+    const login = await request(app).post("/login").type("form").send({ email: TEST_EMAIL, password: "wrong-password" });
+    expect(login.text).toContain(`value="${TEST_EMAIL}"`);
   });
 
   test("a password under 8 characters is refused", async () => {
@@ -129,6 +139,14 @@ describe("4. pages need a login", () => {
     }
   });
 
+  test("when my session expires, Log in sends me back to the page I wanted (Flow 1)", async () => {
+    const tab = await logIn();
+    getDb().prepare("UPDATE sessions SET expires_at = ?").run(Date.now() - 1000);
+    const r = await tab.get("/this-week");
+    expect(r.status).toBe(302);
+    expect(r.headers.location).toBe("/login?next=%2Fthis-week");
+  });
+
   test("a tampered session cookie counts as logged out", async () => {
     const tab = await logIn();
     expect((await tab.get("/")).status).toBe(200);
@@ -182,7 +200,8 @@ describe("6. someone else's application is a 404", () => {
 
 describe("7–8. two tabs", () => {
   test("each tab adds a different application: both are saved", async () => {
-    const [tab1, tab2] = [await logIn(), await logIn()];
+    const tab1 = await logIn();
+    const tab2 = tab1; // two tabs in one browser share the session cookie
     const before = listApplications(testUserId()).length;
     const [a, b] = await Promise.all([
       tab1.post("/applications").type("form").send({ company: "Tab One Co", role: "Dev", applied_on: "2026-10-18" }),
@@ -195,7 +214,8 @@ describe("7–8. two tabs", () => {
   });
 
   test("one tab changes application 3's stage while the other adds one: both are kept", async () => {
-    const [tab1, tab2] = [await logIn(), await logIn()];
+    const tab1 = await logIn();
+    const tab2 = tab1; // two tabs in one browser share the session cookie
     await Promise.all([
       tab1.post("/applications/3/stage").type("form").send({ stage: "offer", next_step_on: "2026-11-02" }),
       tab2.post("/applications").type("form").send({ company: "Tab Two Co", role: "Dev", applied_on: "2026-10-18" }),
