@@ -17,7 +17,7 @@
       "source": "manual",
       "applied_on": "2026-09-14",
       "stage": "applied",
-      "next_step_on": null,
+      "next_step_on": "2026-10-18",
       "notes": ""
     },
     {
@@ -37,7 +37,7 @@
       "source": "manual",
       "applied_on": "2026-10-05",
       "stage": "interview",
-      "next_step_on": null,
+      "next_step_on": "2026-10-17",
       "notes": "Passed the phone screen! Interview date TBC"
     },
     {
@@ -56,7 +56,7 @@
       "role": "QA Engineer",
       "source": "manual",
       "applied_on": "2026-10-08",
-      "stage": "applied",
+      "stage": "interview",
       "next_step_on": null,
       "notes": ""
     },
@@ -76,7 +76,17 @@
       "role": "Junior Software Engineer",
       "source": "rozee",
       "applied_on_raw": "09/10/2026",
-      "stage": "applied",
+      "stage": "interview",
+      "next_step_on": null,
+      "notes": ""
+    },
+    {
+      "id": 9,
+      "company": "IT",
+      "role": "software engeenier",
+      "source": "manual",
+      "applied_on": "2026-10-18",
+      "stage": "interview",
       "next_step_on": null,
       "notes": ""
     }
