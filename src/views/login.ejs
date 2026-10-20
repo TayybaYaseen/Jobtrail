@@ -1,0 +1,15 @@
+<%- include("partials/header", { title: "Log in · JobTrail" }) %>
+<h1>Log in</h1>
+
+<% if (error) { %><p class="error" role="alert"><%= error %></p><% } %>
+
+<form method="post" action="/login" class="stacked">
+  <input type="hidden" name="next" value="<%= next %>">
+  <label>Email <input name="email" type="email" value="<%= email %>" autocomplete="email" required></label>
+  <label>Password <input name="password" type="password" autocomplete="current-password" required></label>
+  <button>Log in</button>
+</form>
+
+<p>New here? <a href="/signup">Create an account</a></p>
+</body>
+</html>

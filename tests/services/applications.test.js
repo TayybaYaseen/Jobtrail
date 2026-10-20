@@ -1,8 +1,8 @@
 import { describe, expect, test } from "vitest";
 import { utcDate } from "../../src/dates.js";
 import { makeApplication } from "../../src/models.js";
-import { addApplication, moveStage, newestFirst } from "../../src/services/applications.js";
-import { loadApplications } from "../../src/store.js";
+import { addApplication, listApplications, moveStage, newestFirst } from "../../src/services/applications.js";
+import { testUserId } from "../helpers.js";
 
 const app = (id, appliedOn) =>
   makeApplication({ id, company: "Co", role: "Dev", source: "manual", appliedOn, stage: "applied" });
@@ -14,22 +14,22 @@ describe("applications", () => {
   });
 
   test("addApplication saves it", () => {
-    const added = addApplication("Tariq Tech", "Developer", utcDate(2026, 10, 12));
+    const added = addApplication(testUserId(), "Tariq Tech", "Developer", utcDate(2026, 10, 12));
     expect(added.stage).toBe("applied");
-    expect(loadApplications().some((a) => a.company === "Tariq Tech")).toBe(true);
+    expect(listApplications(testUserId()).some((a) => a.company === "Tariq Tech")).toBe(true);
   });
 
   test("moveStage with a date", () => {
-    const moved = moveStage(6, "interview", utcDate(2026, 10, 26));
+    const moved = moveStage(testUserId(), 6, "interview", utcDate(2026, 10, 26));
     expect(moved.stage).toBe("interview");
     expect(moved.nextStepOn).toEqual(utcDate(2026, 10, 26));
   });
 
   test("an unknown stage is refused", () => {
-    expect(() => moveStage(6, "ghosted")).toThrow(/is not one of/);
+    expect(() => moveStage(testUserId(), 6, "ghosted")).toThrow(/is not one of/);
   });
 
   test("ticket #103: newest application first", () => {
-    expect(newestFirst(loadApplications())[0].company).toBe("Thar Digital");
+    expect(newestFirst(listApplications(testUserId()))[0].company).toBe("Thar Digital");
   });
 });

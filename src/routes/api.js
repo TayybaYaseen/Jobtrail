@@ -1,9 +1,8 @@
 import { Router } from "express";
 import { parseIsoDate, toIso } from "../dates.js";
-import { addApplication, moveStage, newestFirst } from "../services/applications.js";
+import { addApplication, listApplications, moveStage, newestFirst } from "../services/applications.js";
 import { label, thisWeek } from "../services/schedule.js";
 import { today } from "../settings.js";
-import { loadApplications } from "../store.js";
 
 export const apiRouter = Router();
 
@@ -20,21 +19,21 @@ export function appJson(app) {
 }
 
 apiRouter.get("/applications", (req, res) => {
-  res.json(newestFirst(loadApplications()).map(appJson));
+  res.json(newestFirst(listApplications(req.user.id)).map(appJson));
 });
 
 apiRouter.post("/applications", (req, res) => {
   const { company = "", role = "", applied_on } = req.body ?? {};
-  const app = addApplication(company, role, parseIsoDate(applied_on));
+  const app = addApplication(req.user.id, company, role, parseIsoDate(applied_on));
   res.status(201).json(appJson(app));
 });
 
 apiRouter.post("/applications/:id/stage", (req, res) => {
   const { stage, next_step_on } = req.body ?? {};
-  const app = moveStage(Number(req.params.id), stage, next_step_on ? parseIsoDate(next_step_on) : null);
+  const app = moveStage(req.user.id, Number(req.params.id), stage, next_step_on ? parseIsoDate(next_step_on) : null);
   res.json(appJson(app));
 });
 
 apiRouter.get("/this-week", (req, res) => {
-  res.json(thisWeek(loadApplications(), today()).map((a) => ({ ...appJson(a), label: label(a) })));
+  res.json(thisWeek(listApplications(req.user.id), today()).map((a) => ({ ...appJson(a), label: label(a) })));
 });

@@ -13,10 +13,12 @@
     "dev:demo": "node --env-file=demo.env --watch src/server.js",
     "digest": "node scripts/weekly-digest.js",
     "digest:demo": "node --env-file=demo.env scripts/weekly-digest.js",
+    "import-json": "node scripts/import-json.js",
     "test": "vitest run",
     "lint": "eslint ."
   },
   "dependencies": {
+    "better-sqlite3": "^13.0.3",
     "ejs": "^3.1.10",
     "express": "^5.1.0"
   },

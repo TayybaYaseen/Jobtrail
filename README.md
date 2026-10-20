@@ -22,9 +22,22 @@ npm run dev
 
 Open http://localhost:3000
 
-Your applications are saved in `data/jobtrail.json`, which starts with some
-sample applications: replace them with your own. The tests use their own copy
-in `tests/fixtures/`, so the app and the tests never touch each other's data.
+Sign up with an email and a password (8 or more characters). Everyone shares
+one JobTrail, and each person sees only their own applications. Accounts and
+applications are saved in a SQLite database, `data/jobtrail.db`
+(`JOBTRAIL_DB` points it somewhere else). The tests use their own temporary
+database, so the app and the tests never touch each other's data.
+
+### Moving an old `data/jobtrail.json` into your account
+
+Older versions kept everything in `data/jobtrail.json`. Sign up first, then:
+
+```bash
+npm run import-json -- --email you@example.com --file data/jobtrail.json
+```
+
+It copies every application, with the same dates, stages and notes, and only
+reads the file. It refuses if your account already has applications.
 
 ## Check it
 

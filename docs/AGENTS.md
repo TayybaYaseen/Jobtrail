@@ -1,16 +1,11 @@
-# <!-- Product name --> · Agent instructions
+# JobTrail
 
-<!--
-This replaces the three-line CLAUDE.md you inherited from Zara. Most coding
-agents read AGENTS.md. Because your repo has a CLAUDE.md, Claude Code reads
-that file instead, so CLAUDE.md should now contain just this one line, which
-pulls this file in:
+Job application tracker. Node + Express + EJS pages. Data lives in data/jobtrail.json.
 
-    @AGENTS.md
+- Run: `npm run dev`
+- Test: `npm test`
+- Keep it simple.
 
-Keep this file under about a page. Long files get skimmed, by agents too.
-Delete these comments as you fill it in.
--->
 
 <!-- One line: what the product is, and the stack. -->
 
