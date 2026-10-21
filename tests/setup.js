@@ -17,7 +17,7 @@ beforeEach(() => {
   dir = fs.mkdtempSync(path.join(os.tmpdir(), "jobtrail-"));
   const copy = path.join(dir, "jobtrail.json");
   fs.copyFileSync(SAMPLE, copy);
-  process.env.JOBTRAIL_DATA = copy; // the digest still reads a JSON file
+  process.env.JOBTRAIL_DATA = copy; // npm run import-json reads a JSON file
   process.env.JOBTRAIL_DB = path.join(dir, "jobtrail.db");
   process.env.JOBTRAIL_TODAY = "2026-10-19";
   importRecords(signUp(TEST_EMAIL, TEST_PASSWORD), loadRecords());
