@@ -2,13 +2,16 @@ import { toIso } from "../dates.js";
 import { getDb, transaction } from "../db.js";
 import { AppError } from "../errors.js";
 import { STAGES } from "../models.js";
+import { today } from "../settings.js";
 import { toApplication } from "../store.js";
 import { getCv, MAX_TEXT_LENGTH } from "./cvs.js";
+import { followUps } from "./schedule.js";
 
 // Every function here works on one user's applications only. Someone else's
 // application looks exactly like one that doesn't exist: 404.
 
-const COLUMNS = "id, company, role, source, applied_on, applied_on_raw, stage, next_step_on, notes";
+const COLUMNS =
+  "id, company, role, source, applied_on, applied_on_raw, stage, next_step_on, notes, last_changed_on, followed_up_on";
 
 const INSERT = `INSERT INTO applications
   (user_id, company, role, source, applied_on, applied_on_raw, stage, next_step_on, notes)
@@ -53,7 +56,8 @@ export function addApplication(userId, company, role, appliedOn, cvId = null) {
     const { lastInsertRowid } = db
       .prepare(INSERT)
       .run(userId, company, role, "manual", toIso(appliedOn), null, "applied", null, "");
-    db.prepare("UPDATE applications SET cv_id = ? WHERE id = ?").run(cvId, lastInsertRowid);
+    db.prepare("UPDATE applications SET cv_id = ?, last_changed_on = ? WHERE id = ?")
+      .run(cvId, toIso(today()), lastInsertRowid);
     return Number(lastInsertRowid);
   });
   return getApplication(userId, id);
@@ -81,11 +85,31 @@ export function moveStage(userId, id, stage, nextStepOn = null) {
     throw new AppError("UNKNOWN_STAGE", `'${stage}' is not one of ${STAGES.join(", ")}`);
   }
   if (!Number.isInteger(id)) throw notFound(id);
+  // A new stage means news from the company, so it restarts the follow-up clock.
+  // Saving the same stage (say, only a new next-step date) doesn't. The CASE
+  // sees the stage from before this UPDATE.
   const { changes } = getDb()
-    .prepare("UPDATE applications SET stage = ?, next_step_on = ? WHERE id = ? AND user_id = ?")
-    .run(stage, nextStepOn ? toIso(nextStepOn) : null, id, userId);
+    .prepare(
+      `UPDATE applications
+       SET last_changed_on = CASE WHEN stage = @stage THEN last_changed_on ELSE @today END,
+           stage = @stage, next_step_on = @nextStepOn
+       WHERE id = @id AND user_id = @userId`,
+    )
+    .run({ stage, today: toIso(today()), nextStepOn: nextStepOn ? toIso(nextStepOn) : null, id, userId });
   if (changes === 0) throw notFound(id);
   return getApplication(userId, id);
+}
+
+/**
+ * Records today as the day I followed up. Only when it's due: a second tap,
+ * or a tap from an old page, changes nothing. Returns whether it saved.
+ */
+export function markFollowedUp(userId, id) {
+  const app = getApplication(userId, id); // 404 if it isn't theirs, or is gone
+  const now = today();
+  if (followUps([app], now).length === 0) return false;
+  getDb().prepare("UPDATE applications SET followed_up_on = ? WHERE id = ? AND user_id = ?").run(toIso(now), id, userId);
+  return true;
 }
 
 /**

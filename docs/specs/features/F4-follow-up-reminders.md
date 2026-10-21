@@ -1,6 +1,6 @@
 # F4 · Follow-up reminders
 
-**Status:** draft · **Suggested verdict:** v1
+**Status:** Approved · **Suggested verdict:** v1
 **Brief:** [00-product-brief.md](../00-product-brief.md) · **Flow:** [Flow 2](../01-user-flows.md#flow-2--follow-up-on-silence)
 **Wishlist:** 3 (Follow-up reminders), from Mahnoor
 **Needs:** F1 (reminders per user), F2 (This Week layout)
@@ -69,13 +69,17 @@ All examples use today = 19 Oct 2026.
 
 ## Open questions
 
-- [ ] Should Screening count as "heard back"? (Proposal: yes, so only
-      Applied gets reminders.)
+- [x] Should Screening count as "heard back"? (Proposal: yes, so only
+      Applied gets reminders.) **Answer:** yes, as criterion 3 says.
+- [x] Where does the digest read from? **Answer:** the database, for one
+      account: `npm run digest -- --email you@example.com`. The old JSON file
+      has no follow-up dates, so it couldn't drop a reminder after
+      **Followed up**.
 
 ## Done means
 
-- [ ] Every acceptance criterion has a passing test, using the pinned date
+- [x] Every acceptance criterion has a passing test, using the pinned date
       (`JOBTRAIL_TODAY`).
-- [ ] Nothing from "Out of scope" was built.
-- [ ] Existing This Week and digest tests still pass.
-- [ ] `npm test` and `npm run lint` pass.
+- [x] Nothing from "Out of scope" was built.
+- [x] Existing This Week and digest tests still pass.
+- [x] `npm test` and `npm run lint` pass.

@@ -7,6 +7,7 @@ export const NEXT_STEP_STAGES = ["screening", "interview", "offer"];
  * An application, as the rest of the app sees it.
  * appliedOn and nextStepOn are Dates (midnight UTC); nextStepOn can be null.
  * jobPost is the pasted job post or null; cv is the CV sent ({ id, name }) or null.
+ * lastChangedOn (added, or stage changed) and followedUpOn are Dates or null.
  */
 export function makeApplication({
   id,
@@ -19,6 +20,8 @@ export function makeApplication({
   notes = "",
   jobPost = null,
   cv = null,
+  lastChangedOn = null,
+  followedUpOn = null,
 }) {
-  return { id, company, role, source, appliedOn, stage, nextStepOn, notes, jobPost, cv };
+  return { id, company, role, source, appliedOn, stage, nextStepOn, notes, jobPost, cv, lastChangedOn, followedUpOn };
 }

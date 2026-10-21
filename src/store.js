@@ -5,7 +5,7 @@
 // store `applied_on` as YYYY-MM-DD. Imported ones keep the job site's own date
 // text in `applied_on_raw`, parsed on load.
 //
-// JSON files are only ever read: by `npm run import-json` and the digest.
+// JSON files are only ever read: by `npm run import-json`.
 
 import fs from "node:fs";
 import { parseIsoDate } from "./dates.js";
@@ -41,10 +41,12 @@ export function toApplication(record) {
     notes: record.notes ?? "",
     jobPost: record.job_post ?? null,
     cv: record.cv_id ? { id: record.cv_id, name: record.cv_name } : null,
+    lastChangedOn: record.last_changed_on ? parseIsoDate(record.last_changed_on) : null,
+    followedUpOn: record.followed_up_on ? parseIsoDate(record.followed_up_on) : null,
   });
 }
 
-/** Applications from the JSON file. Used by the digest. */
+/** Applications from the JSON file. Used by the import tests. */
 export function loadApplications() {
   return loadRecords().map(toApplication);
 }

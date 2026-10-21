@@ -1,10 +1,30 @@
 <%- include("partials/header", { title: "This Week · JobTrail" }) %>
 <h1>This Week</h1>
 <p class="muted">Week of <%= niceDate(today) %></p>
+
+<% if (error) { %><p class="error" role="alert"><%= error %></p><% } %>
+
 <ul class="week-list">
   <% if (lines.length === 0) { %><li class="muted">Nothing scheduled this week.</li><% } %>
   <% for (const line of lines) { %><li><%= line %></li><% } %>
 </ul>
+
+<h2 class="section-heading">Follow up</h2>
+<% if (followUps.length === 0) { %>
+<p class="muted">Nothing to follow up on. Nice.</p>
+<% } else { %>
+<p class="muted">No reply for a week or more. Send them a short email, then tap <strong>Followed up</strong>.</p>
+<ul class="week-list follow-ups">
+  <% for (const f of followUps) { %>
+  <li class="follow-up">
+    <span><%= f.text %></span>
+    <form method="post" action="/applications/<%= f.id %>/followed-up">
+      <button class="secondary">Followed up</button>
+    </form>
+  </li>
+  <% } %>
+</ul>
+<% } %>
 </main>
 </body>
 </html>

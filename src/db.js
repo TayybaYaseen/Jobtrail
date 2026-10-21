@@ -59,6 +59,8 @@ const ADDED_COLUMNS = {
   applications: {
     job_post: "TEXT",
     cv_id: "INTEGER REFERENCES cvs(id)",
+    last_changed_on: "TEXT", // set when it's added or its stage changes; null means use applied_on
+    followed_up_on: "TEXT",
   },
 };
 

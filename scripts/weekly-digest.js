@@ -1,15 +1,27 @@
-// Monday digest: the week ahead, in plain text.
+// Monday digest for one account: the week ahead and who to follow up with, in plain text.
 //
-// Everyone's copy of JobTrail runs this every Monday at 8am and emails the
-// output to them. Run it yourself with:  npm run digest
+//   npm run digest -- --email hira@example.com
+//
+// It reads the same database as the app, so it matches This Week exactly:
+// once you tap "Followed up", the reminder leaves the digest too.
 
-import { thisWeek } from "../src/services/schedule.js";
-import { describeNextStep, niceDate } from "../src/formatting.js";
+import { parseArgs } from "node:util";
+import { findUserByEmail, normalizeEmail } from "../src/services/accounts.js";
+import { listApplications } from "../src/services/applications.js";
+import { digestLines } from "../src/services/digest.js";
 import { today } from "../src/settings.js";
-import { loadApplications } from "../src/store.js";
 
-const now = today();
-console.log(`JobTrail · week of ${niceDate(now)}`);
-const upcoming = thisWeek(loadApplications(), now);
-if (upcoming.length === 0) console.log("Nothing scheduled this week.");
-for (const app of upcoming) console.log(`- ${describeNextStep(app, now)}`);
+const { values } = parseArgs({ options: { email: { type: "string" } } });
+
+if (!values.email) {
+  console.error("Usage: npm run digest -- --email you@example.com");
+  process.exit(1);
+}
+
+const user = findUserByEmail(values.email);
+if (!user) {
+  console.error(`No account for ${normalizeEmail(values.email)}.`);
+  process.exit(1);
+}
+
+console.log(digestLines(listApplications(user.id), today()).join("\n"));
