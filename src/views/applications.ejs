@@ -5,6 +5,14 @@
   <label>Company <input name="company" required></label>
   <label>Role <input name="role" required></label>
   <label>Applied on <input name="applied_on" type="date" required></label>
+  <% if (cvs.length > 0) { %>
+  <label>CV sent
+    <select name="cv_id">
+      <option value="">No CV chosen</option>
+      <% cvs.forEach((cv, i) => { %><option value="<%= cv.id %>" <%= i === 0 ? "selected" : "" %>><%= cv.name %> (added <%= niceDate(cv.addedOn) %>)</option><% }) %>
+    </select>
+  </label>
+  <% } %>
   <button>Add</button>
 </form>
 
@@ -16,7 +24,7 @@
   <li class="app-card">
     <div class="app-card-head">
       <div>
-        <h2><%= app.company %></h2>
+        <h2><a class="card-link" href="/applications/<%= app.id %>"><%= app.company %></a></h2>
         <p class="role"><%= app.role %></p>
       </div>
       <span class="stage"><%= stageLabel(app.stage) %></span>

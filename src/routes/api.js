@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { parseIsoDate, toIso } from "../dates.js";
-import { addApplication, listApplications, moveStage, newestFirst } from "../services/applications.js";
+import { addApplication, getApplication, listApplications, moveStage, newestFirst } from "../services/applications.js";
 import { label, thisWeek } from "../services/schedule.js";
 import { today } from "../settings.js";
 
@@ -20,6 +20,11 @@ export function appJson(app) {
 
 apiRouter.get("/applications", (req, res) => {
   res.json(newestFirst(listApplications(req.user.id)).map(appJson));
+});
+
+apiRouter.get("/applications/:id", (req, res) => {
+  const app = getApplication(req.user.id, Number(req.params.id));
+  res.json({ ...appJson(app), job_post: app.jobPost, cv: app.cv });
 });
 
 apiRouter.post("/applications", (req, res) => {

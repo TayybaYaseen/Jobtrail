@@ -1,0 +1,33 @@
+<%- include("partials/header", { title: `${app.company} · JobTrail` }) %>
+<p class="back"><a href="/">← All applications</a></p>
+<div class="app-card-head">
+  <div>
+    <h1><%= app.company %></h1>
+    <p class="role"><%= app.role %></p>
+  </div>
+  <span class="stage"><%= stageLabel(app.stage) %></span>
+</div>
+<dl class="dates panel">
+  <dt>Applied</dt><dd><%= niceDate(app.appliedOn) %></dd>
+  <dt>Next step</dt><dd><%= app.nextStepOn ? niceDate(app.nextStepOn) : "—" %></dd>
+  <dt>CV sent</dt><dd><% if (app.cv) { %><a href="/cvs/<%= app.cv.id %>"><%= app.cv.name %></a><% } else { %>No CV chosen<% } %></dd>
+</dl>
+
+<% if (error) { %><p class="error" role="alert"><%= error %></p><% } %>
+<% if (saved) { %><p class="saved" role="status">Saved</p><% } %>
+
+<form method="post" action="/applications/<%= app.id %>" class="panel stacked-wide">
+  <label>Job post <textarea name="job_post" rows="10">
+<%= jobPost %></textarea></label>
+  <label>CV sent
+    <select name="cv_id">
+      <option value="">No CV chosen</option>
+      <% for (const cv of cvs) { %><option value="<%= cv.id %>" <%= cv.id === cvId ? "selected" : "" %>><%= cv.name %> (added <%= niceDate(cv.addedOn) %>)</option><% } %>
+    </select>
+  </label>
+  <p class="hint"><a href="/cvs">Add a CV</a></p>
+  <button>Save</button>
+</form>
+</main>
+</body>
+</html>

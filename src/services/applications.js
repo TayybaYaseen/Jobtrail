@@ -3,6 +3,7 @@ import { getDb, transaction } from "../db.js";
 import { AppError } from "../errors.js";
 import { STAGES } from "../models.js";
 import { toApplication } from "../store.js";
+import { getCv, MAX_TEXT_LENGTH } from "./cvs.js";
 
 // Every function here works on one user's applications only. Someone else's
 // application looks exactly like one that doesn't exist: 404.
@@ -28,21 +29,51 @@ export function listApplications(userId) {
     .map(toApplication);
 }
 
+/** One application, with its job post and the CV sent ({ id, name }). */
 export function getApplication(userId, id) {
   if (!Number.isInteger(id)) throw notFound(id);
-  const row = getDb().prepare(`SELECT ${COLUMNS} FROM applications WHERE id = ? AND user_id = ?`).get(id, userId);
+  const row = getDb()
+    .prepare(
+      `SELECT applications.*, cvs.name AS cv_name
+       FROM applications LEFT JOIN cvs ON cvs.id = applications.cv_id
+       WHERE applications.id = ? AND applications.user_id = ?`,
+    )
+    .get(id, userId);
   if (!row) throw notFound(id);
   return toApplication(row);
 }
 
-export function addApplication(userId, company, role, appliedOn) {
+/** cvId (optional) is the CV sent with it; it must be one of this user's CVs. */
+export function addApplication(userId, company, role, appliedOn, cvId = null) {
   company = company.trim();
   role = role.trim();
   if (!company || !role) throw new AppError("MISSING_FIELDS", "Company and role are both required");
-  const { lastInsertRowid } = getDb()
-    .prepare(INSERT)
-    .run(userId, company, role, "manual", toIso(appliedOn), null, "applied", null, "");
-  return getApplication(userId, Number(lastInsertRowid));
+  if (cvId !== null) getCv(userId, cvId); // 404 if it isn't theirs
+  const id = transaction((db) => {
+    const { lastInsertRowid } = db
+      .prepare(INSERT)
+      .run(userId, company, role, "manual", toIso(appliedOn), null, "applied", null, "");
+    db.prepare("UPDATE applications SET cv_id = ? WHERE id = ?").run(cvId, lastInsertRowid);
+    return Number(lastInsertRowid);
+  });
+  return getApplication(userId, id);
+}
+
+/**
+ * Saves the job post and the CV sent. A blank job post is saved as null, and
+ * so is "No CV chosen". Checks everything before writing, so an error saves nothing.
+ */
+export function saveJobPostAndCv(userId, id, jobPost, cvId) {
+  jobPost = typeof jobPost === "string" && jobPost.trim() ? jobPost : null;
+  if (jobPost && jobPost.length > MAX_TEXT_LENGTH) {
+    throw new AppError("JOB_POST_TOO_LONG", "That job post is too long (20,000 characters max).");
+  }
+  getApplication(userId, id); // 404 if it isn't theirs
+  if (cvId !== null) getCv(userId, cvId); // 404 if it isn't theirs
+  getDb()
+    .prepare("UPDATE applications SET job_post = ?, cv_id = ? WHERE id = ? AND user_id = ?")
+    .run(jobPost, cvId, id, userId);
+  return getApplication(userId, id);
 }
 
 export function moveStage(userId, id, stage, nextStepOn = null) {
