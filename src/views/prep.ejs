@@ -1,0 +1,29 @@
+<%- include("partials/header", { title: `Interview prep · ${app.company} · JobTrail` }) %>
+<p class="back"><a href="/applications/<%= app.id %>">← <%= app.company %></a></p>
+<h1>Interview prep</h1>
+<p class="role"><%= app.company %> · <%= app.role %></p>
+
+<% if (error) { %><p class="error" role="alert"><%= error %></p><% } %>
+
+<% if (prep) { %>
+<p class="muted">Made on <%= longDate(prep.createdOn) %></p>
+<% if (changed) { %><p class="notice" role="status">The job post or CV changed since this was made</p><% } %>
+<%- include("partials/prep-button", { app, cantPrep, label: error ? "Try again" : "Regenerate" }) %>
+<ol class="prep-list">
+  <% for (const q of prep.questions) { %>
+  <li class="panel">
+    <h2><%= q.question %></h2>
+    <p class="quote-label">Why they'll ask</p>
+    <blockquote dir="auto"><%= q.why.quote %></blockquote>
+    <p class="quote-label">Talk about</p>
+    <blockquote dir="auto"><%= q.talk_about.quote %></blockquote>
+  </li>
+  <% } %>
+</ol>
+<% } else { %>
+<p class="muted">Likely questions from the job post, each quoting the job post and the CV you sent.</p>
+<%- include("partials/prep-button", { app, cantPrep, label: error ? "Try again" : "Prepare for interview" }) %>
+<% } %>
+</main>
+</body>
+</html>

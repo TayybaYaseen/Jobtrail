@@ -6,9 +6,18 @@
   <title><%= title %></title>
   <link rel="stylesheet" href="/styles.css">
   <script>
-    // Sign up / Log in: disable the button while the form submits, so it can't be sent twice.
-    document.addEventListener("submit", (e) => { if (e.target.matches("form.stacked")) e.submitter?.setAttribute("disabled", ""); });
-    window.addEventListener("pageshow", () => document.querySelectorAll("form.stacked button").forEach((b) => b.removeAttribute("disabled")));
+    // Sign up, Log in and Prepare for interview: disable the button while the form
+    // submits, so it can't be sent twice. Prep also says it can take up to 30 seconds.
+    document.addEventListener("submit", (e) => {
+      if (!e.target.matches("form.stacked, form.prep-form")) return;
+      e.submitter?.setAttribute("disabled", "");
+      e.submitter?.setAttribute("data-busy", "");
+      e.target.querySelector("[data-loading]")?.removeAttribute("hidden");
+    });
+    window.addEventListener("pageshow", () => {
+      document.querySelectorAll("[data-busy]").forEach((b) => { b.removeAttribute("disabled"); b.removeAttribute("data-busy"); });
+      document.querySelectorAll("[data-loading]").forEach((p) => p.setAttribute("hidden", ""));
+    });
   </script>
 </head>
 <body>

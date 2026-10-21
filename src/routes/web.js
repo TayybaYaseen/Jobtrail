@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { describeFollowUp, describeNextStep, niceDate, stageLabel } from "../formatting.js";
+import { describeFollowUp, describeNextStep, longDate, niceDate, stageLabel } from "../formatting.js";
 import { parseIsoDate, toIso } from "../dates.js";
 import { AppError } from "../errors.js";
 import { STAGES } from "../models.js";
@@ -13,12 +13,13 @@ import {
   saveJobPostAndCv,
 } from "../services/applications.js";
 import { addCv, deleteCv, getCv, listCvs } from "../services/cvs.js";
+import { getPrep, makePrep } from "../services/prep.js";
 import { followUps, thisWeek } from "../services/schedule.js";
 import { today } from "../settings.js";
 
 export const webRouter = Router();
 
-const helpers = { niceDate, stageLabel, toIso };
+const helpers = { longDate, niceDate, stageLabel, toIso };
 
 /** A CV picker's value: "" is "No CV chosen". Anything else that isn't a CV id is a 404 later. */
 const cvIdFrom = (value) => (value ? Number(value) : null);
@@ -47,8 +48,11 @@ webRouter.post("/applications", (req, res) => {
 
 webRouter.get("/applications/:id", (req, res) => {
   const app = getApplication(req.user.id, Number(req.params.id));
+  const { prep, cantPrep } = getPrep(req.user.id, app.id);
   res.render("application", {
     app,
+    prep,
+    cantPrep,
     cvs: listCvs(req.user.id),
     jobPost: app.jobPost ?? "",
     cvId: app.cv?.id ?? null,
@@ -62,7 +66,7 @@ webRouter.post("/applications/:id", (req, res) => {
   const id = Number(req.params.id);
   const { job_post = "", cv_id = "" } = req.body ?? {};
   const data = () => ({
-    app: getApplication(req.user.id, id),
+    ...getPrep(req.user.id, id), // app, prep, changed, cantPrep
     cvs: listCvs(req.user.id),
     jobPost: job_post,
     cvId: cvIdFrom(cv_id),
@@ -78,6 +82,25 @@ webRouter.post("/applications/:id/stage", (req, res) => {
   const { stage, next_step_on } = req.body;
   moveStage(req.user.id, Number(req.params.id), stage, next_step_on ? parseIsoDate(next_step_on) : null);
   res.redirect(303, "/");
+});
+
+// F5 · Interview prep. Opening the page never calls the AI; only the button does.
+function renderPrep(req, res, error = null) {
+  const { app, prep, changed, cantPrep } = getPrep(req.user.id, Number(req.params.id));
+  res.render("prep", { app, prep, changed, cantPrep, error, ...helpers });
+}
+
+webRouter.get("/applications/:id/prep", (req, res) => renderPrep(req, res));
+
+webRouter.post("/applications/:id/prep", async (req, res) => {
+  const id = Number(req.params.id);
+  try {
+    await makePrep(req.user.id, id);
+  } catch (err) {
+    if (!(err instanceof AppError) || err.status === 404) throw err;
+    return renderPrep(req, res.status(err.status), err.message);
+  }
+  res.redirect(303, `/applications/${id}/prep`);
 });
 
 function renderThisWeek(req, res, error = null) {

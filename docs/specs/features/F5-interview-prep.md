@@ -1,6 +1,6 @@
 # F5 · Interview prep with sources
 
-**Status:** draft · **Suggested verdict:** v1
+**Status:** Approved · **Suggested verdict:** v1
 **Brief:** [00-product-brief.md](../00-product-brief.md) · **Flow:** [Flow 3](../01-user-flows.md#flow-3--prepare-for-an-interview)
 **Wishlist:** 1 (Can it help me prep for an interview?), from Hira
 **Needs:** F1 (per-user limits and storage), F3 (the job post and the CV sent)
