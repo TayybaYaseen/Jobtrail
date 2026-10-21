@@ -11,8 +11,10 @@ export const app = express();
 
 app.set("view engine", "ejs");
 app.set("views", path.join(ROOT, "src", "views"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+// 1 MB, not the default 100 KB: a pasted 20,000-character CV or job post must
+// reach our own length check, which explains the limit, instead of failing here.
+app.use(express.json({ limit: "1mb" }));
+app.use(express.urlencoded({ extended: false, limit: "1mb" }));
 // Styles are public: Log in and Sign up need them too.
 app.use(express.static(path.join(ROOT, "public")));
 app.use(loadUser);

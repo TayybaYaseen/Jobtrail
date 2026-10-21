@@ -41,7 +41,35 @@ CREATE TABLE IF NOT EXISTS applications (
   notes          TEXT NOT NULL DEFAULT ''
 );
 CREATE INDEX IF NOT EXISTS applications_user ON applications(user_id);
+
+-- CV versions. The text is never updated: to change a CV, add a new version.
+CREATE TABLE IF NOT EXISTS cvs (
+  id       INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id  INTEGER NOT NULL REFERENCES users(id),
+  name     TEXT NOT NULL,
+  text     TEXT NOT NULL,
+  added_on TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS cvs_user ON cvs(user_id);
 `;
+
+// Columns added after a table first shipped. Older databases get them when
+// they're opened; their applications start with no job post and no CV.
+const ADDED_COLUMNS = {
+  applications: {
+    job_post: "TEXT",
+    cv_id: "INTEGER REFERENCES cvs(id)",
+  },
+};
+
+function migrate(conn) {
+  for (const [table, columns] of Object.entries(ADDED_COLUMNS)) {
+    const have = new Set(conn.prepare(`PRAGMA table_info(${table})`).all().map((c) => c.name));
+    for (const [name, type] of Object.entries(columns)) {
+      if (!have.has(name)) conn.exec(`ALTER TABLE ${table} ADD COLUMN ${name} ${type}`);
+    }
+  }
+}
 
 let db = null;
 let openPath = null;
@@ -55,6 +83,7 @@ export function getDb() {
   db = new Database(file, { timeout: 5000 }); // waits up to 5s if another process is writing
   db.pragma("foreign_keys = ON");
   db.exec(SCHEMA);
+  migrate(db);
   openPath = file;
   return db;
 }

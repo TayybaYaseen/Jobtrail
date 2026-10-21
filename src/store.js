@@ -39,6 +39,8 @@ export function toApplication(record) {
     stage: record.stage,
     nextStepOn: record.next_step_on ? parseIsoDate(record.next_step_on) : null,
     notes: record.notes ?? "",
+    jobPost: record.job_post ?? null,
+    cv: record.cv_id ? { id: record.cv_id, name: record.cv_name } : null,
   });
 }
 

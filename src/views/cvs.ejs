@@ -1,0 +1,33 @@
+<%- include("partials/header", { title: "CVs · JobTrail" }) %>
+<h1>CVs</h1>
+
+<% if (error) { %><p class="error" role="alert"><%= error %></p><% } %>
+
+<form method="post" action="/cvs" class="panel stacked-wide">
+  <label>Name <input name="name" value="<%= name %>" required></label>
+  <label>CV text <textarea name="text" rows="8" required>
+<%= text %></textarea></label>
+  <p class="muted hint">A saved CV can't be edited. To change it, add a new version.</p>
+  <button>Add CV</button>
+</form>
+
+<% if (cvs.length === 0) { %>
+<p class="muted">No CVs yet. Add the version you send to employers.</p>
+<% } else { %>
+<ul class="cv-list">
+  <% for (const cv of cvs) { %>
+  <li class="cv-row">
+    <div>
+      <h2><a href="/cvs/<%= cv.id %>"><%= cv.name %></a></h2>
+      <p class="muted">Added <%= niceDate(cv.addedOn) %></p>
+    </div>
+    <form method="post" action="/cvs/<%= cv.id %>/delete">
+      <button class="secondary">Delete</button>
+    </form>
+  </li>
+  <% } %>
+</ul>
+<% } %>
+</main>
+</body>
+</html>

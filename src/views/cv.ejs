@@ -1,0 +1,10 @@
+<%- include("partials/header", { title: `${cv.name} · JobTrail` }) %>
+<p class="back"><a href="/cvs">← All CVs</a></p>
+<h1><%= cv.name %></h1>
+<p class="muted">Added <%= niceDate(cv.addedOn) %>. This is the text exactly as it was saved. To change it, add a new version.</p>
+
+<pre class="cv-text panel">
+<%= cv.text %></pre>
+</main>
+</body>
+</html>

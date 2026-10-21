@@ -70,12 +70,14 @@ know exactly what the employer read before my interview.
 
 ## Open questions
 
-- [ ] Should the CV picker default to the most recent CV for new
-      applications? (Proposal: yes.)
+- [x] Should the CV picker default to the most recent CV for new
+      applications? (Proposal: yes.) **Answer:** yes. The Add form has a
+      "CV sent" picker that starts on the newest CV (it can be set to "No CV
+      chosen"). Applications from before F3 keep "No CV chosen" (criterion 9).
 
 ## Done means
 
-- [ ] Every acceptance criterion has a passing test.
-- [ ] Nothing from "Out of scope" was built.
-- [ ] The new pages pass the F2 rules at 360px.
-- [ ] `npm test` and `npm run lint` pass.
+- [x] Every acceptance criterion has a passing test.
+- [x] Nothing from "Out of scope" was built.
+- [x] The new pages pass the F2 rules at 360px.
+- [x] `npm test` and `npm run lint` pass.
