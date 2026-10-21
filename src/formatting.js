@@ -24,6 +24,11 @@ export function hasNextStep(app) {
   return WITH_NEXT_STEP.has(app.stage);
 }
 
+/** e.g. "Margalla Tech · no reply for 35 days" */
+export function describeFollowUp({ app, daysSilent }) {
+  return `${app.company} · no reply for ${daysSilent} days`;
+}
+
 /** e.g. "Tue 20 Oct · Ravi Systems · interview (tomorrow)" */
 export function describeNextStep(app, today) {
   const n = daysUntil(app.nextStepOn, today);

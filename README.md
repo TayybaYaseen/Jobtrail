@@ -58,15 +58,24 @@ text in `applied_on_raw`. JobTrail reads it when it loads the file.
 ## This week
 
 `/this-week` lists interviews, screens and offer deadlines in the next seven
-days. Every Monday, each copy runs `npm run digest` on a schedule and emails
-what it prints.
+days. Under them, **Follow up** lists applications still at Applied with no
+news for 7 days or more, longest silence first. Tap **Followed up** after you
+email the company, and it's back in 7 days if they still haven't replied.
 
-`npm run dev:demo` and `npm run digest:demo` pin today to 19 October 2026
-(see `demo.env`), so the sample data always has a week ahead.
+The Monday digest prints the same thing for one account, from the database:
+
+```
+npm run digest -- --email hira@example.com
+```
+
+`npm run dev:demo` and `npm run digest:demo -- --email …` pin today to 19
+October 2026 (see `demo.env`), so the sample data always has a week ahead.
 
 ## API
 
 - `GET /api/applications`
 - `POST /api/applications`
+- `GET /api/applications/:id` (with `job_post` and `cv`)
 - `POST /api/applications/:id/stage`
 - `GET /api/this-week`
+- `GET /api/follow-ups` (each with `days_silent`)

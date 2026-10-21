@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { parseIsoDate, toIso } from "../dates.js";
 import { addApplication, getApplication, listApplications, moveStage, newestFirst } from "../services/applications.js";
-import { label, thisWeek } from "../services/schedule.js";
+import { followUps, label, thisWeek } from "../services/schedule.js";
 import { today } from "../settings.js";
 
 export const apiRouter = Router();
@@ -37,6 +37,10 @@ apiRouter.post("/applications/:id/stage", (req, res) => {
   const { stage, next_step_on } = req.body ?? {};
   const app = moveStage(req.user.id, Number(req.params.id), stage, next_step_on ? parseIsoDate(next_step_on) : null);
   res.json(appJson(app));
+});
+
+apiRouter.get("/follow-ups", (req, res) => {
+  res.json(followUps(listApplications(req.user.id), today()).map((f) => ({ ...appJson(f.app), days_silent: f.daysSilent })));
 });
 
 apiRouter.get("/this-week", (req, res) => {

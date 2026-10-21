@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { describeNextStep, niceDate, stageLabel } from "../formatting.js";
+import { describeFollowUp, describeNextStep, niceDate, stageLabel } from "../formatting.js";
 import { parseIsoDate, toIso } from "../dates.js";
 import { AppError } from "../errors.js";
 import { STAGES } from "../models.js";
@@ -7,12 +7,13 @@ import {
   addApplication,
   getApplication,
   listApplications,
+  markFollowedUp,
   moveStage,
   newestFirst,
   saveJobPostAndCv,
 } from "../services/applications.js";
 import { addCv, deleteCv, getCv, listCvs } from "../services/cvs.js";
-import { thisWeek } from "../services/schedule.js";
+import { followUps, thisWeek } from "../services/schedule.js";
 import { today } from "../settings.js";
 
 export const webRouter = Router();
@@ -79,10 +80,29 @@ webRouter.post("/applications/:id/stage", (req, res) => {
   res.redirect(303, "/");
 });
 
-webRouter.get("/this-week", (req, res) => {
+function renderThisWeek(req, res, error = null) {
   const now = today();
-  const lines = thisWeek(listApplications(req.user.id), now).map((a) => describeNextStep(a, now));
-  res.render("this-week", { today: now, lines, ...helpers });
+  const apps = listApplications(req.user.id);
+  res.render("this-week", {
+    today: now,
+    lines: thisWeek(apps, now).map((a) => describeNextStep(a, now)),
+    followUps: followUps(apps, now).map((f) => ({ id: f.app.id, text: describeFollowUp(f) })),
+    error,
+    ...helpers,
+  });
+}
+
+webRouter.get("/this-week", (req, res) => renderThisWeek(req, res));
+
+webRouter.post("/applications/:id/followed-up", (req, res) => {
+  try {
+    markFollowedUp(req.user.id, Number(req.params.id));
+  } catch (err) {
+    if (!(err instanceof AppError) || err.status !== 404) throw err;
+    // Deleted in another tab (or never mine): say so, and show the list as it is now.
+    return renderThisWeek(req, res.status(404), "That application no longer exists.");
+  }
+  res.redirect(303, "/this-week");
 });
 
 webRouter.get("/cvs", (req, res) => {

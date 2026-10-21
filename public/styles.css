@@ -412,3 +412,27 @@ form.stacked-wide {
   align-items: center;
   min-height: 2.75rem;
 }
+
+/* This Week: Follow up */
+
+.section-heading {
+  margin: 2rem 0 0.5rem;
+  font-size: 1.25rem;
+}
+
+.follow-up {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+}
+
+.follow-up > span {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+
+.follow-up form {
+  margin: 0;
+}
