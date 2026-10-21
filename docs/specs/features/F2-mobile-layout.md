@@ -1,6 +1,6 @@
 # F2 · Works on a phone
 
-**Status:** draft · **Suggested verdict:** v1
+**Status:** Approved · **Suggested verdict:** v1
 **Brief:** [00-product-brief.md](../00-product-brief.md) · **Flow:** all three
 **Wishlist:** 8 (Mobile), Z3 (It's ugly)
 **Needs:** F1 (the Log in, Sign up and Log out screens are restyled too)
@@ -62,14 +62,15 @@ a laptop.
 
 ## Open questions
 
-- [ ] A colour palette and a logo. Who picks? (Proposal: neutral greys plus
-      one accent colour; no logo in v1.)
+- [x] A colour palette and a logo. Who picks? (Proposal: neutral greys plus
+      one accent colour; no logo in v1.) **Answer:** neutral greys plus a
+      purple accent (`--accent: #6d28d9`), no logo in v1.
 
 ## Done means
 
-- [ ] Every acceptance criterion has a passing test where it can be tested
+- [x] Every acceptance criterion has a passing test where it can be tested
       in HTML (1, 3, 7, 8). The rest are checked by hand in the browser's
       DevTools at 360px and 768px, with screenshots in the PR.
-- [ ] Existing page tests still pass.
-- [ ] "Every screen works at 360px" is added to `AGENTS.md` as a convention.
-- [ ] `npm test` and `npm run lint` pass.
+- [x] Existing page tests still pass.
+- [x] "Every screen works at 360px" is added to `AGENTS.md` as a convention.
+- [x] `npm test` and `npm run lint` pass.

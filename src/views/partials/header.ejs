@@ -4,16 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= title %></title>
-  <style>
-    body { font-family: system-ui, sans-serif; max-width: 960px; margin: 2rem auto; padding: 0 1rem; }
-    nav a { margin-right: 1rem; }
-    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-    th, td { text-align: left; padding: 0.4rem; border-bottom: 1px solid #ddd; vertical-align: top; }
-    form.inline { display: flex; gap: 0.3rem; }
-    nav form { display: inline; float: right; }
-    form.stacked { display: flex; flex-direction: column; gap: 0.6rem; max-width: 20rem; }
-    .error { color: #b00020; }
-  </style>
+  <link rel="stylesheet" href="/styles.css">
   <script>
     // Sign up / Log in: disable the button while the form submits, so it can't be sent twice.
     document.addEventListener("submit", (e) => { if (e.target.matches("form.stacked")) e.submitter?.setAttribute("disabled", ""); });
@@ -21,9 +12,15 @@
   </script>
 </head>
 <body>
-  <nav><strong>JobTrail</strong> &nbsp;
-  <% if (locals.user) { %>
-    <a href="/">Applications</a><a href="/this-week">This week</a>
-    <form method="post" action="/logout"><button>Log out</button></form>
-  <% } %>
+  <nav class="site-nav">
+    <div class="site-nav-inner">
+      <span class="brand">JobTrail</span>
+      <% if (locals.user) { %>
+      <% for (const [href, label] of [["/", "Applications"], ["/this-week", "This Week"]]) { %>
+      <a href="<%= href %>"<% if (locals.currentPath === href) { %> aria-current="page"<% } %>><%= label %></a>
+      <% } %>
+      <form method="post" action="/logout"><button class="secondary">Log out</button></form>
+      <% } %>
+    </div>
   </nav>
+  <main>

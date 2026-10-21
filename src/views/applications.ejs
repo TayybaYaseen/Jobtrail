@@ -1,35 +1,43 @@
 <%- include("partials/header", { title: "JobTrail" }) %>
 <h1>Applications</h1>
 
-<form method="post" action="/applications" class="inline">
-  <input name="company" placeholder="Company" required>
-  <input name="role" placeholder="Role" required>
-  <input name="applied_on" type="date" required>
+<form method="post" action="/applications" class="panel add-form">
+  <label>Company <input name="company" required></label>
+  <label>Role <input name="role" required></label>
+  <label>Applied on <input name="applied_on" type="date" required></label>
   <button>Add</button>
 </form>
 
-<table>
-  <tr><th>Company</th><th>Role</th><th>Applied</th><th>Stage</th><th>Next step</th></tr>
-  <% if (apps.length === 0) { %>
-  <tr><td colspan="5">No applications yet. Add your first one above.</td></tr>
-  <% } %>
+<% if (apps.length === 0) { %>
+<p class="muted">No applications yet. Add your first one above.</p>
+<% } else { %>
+<ul class="app-list">
   <% for (const app of apps) { %>
-  <tr>
-    <td><%= app.company %></td>
-    <td><%= app.role %></td>
-    <td><%= niceDate(app.appliedOn) %></td>
-    <td>
-      <form method="post" action="/applications/<%= app.id %>/stage" class="inline">
+  <li class="app-card">
+    <div class="app-card-head">
+      <div>
+        <h2><%= app.company %></h2>
+        <p class="role"><%= app.role %></p>
+      </div>
+      <span class="stage"><%= stageLabel(app.stage) %></span>
+    </div>
+    <dl class="dates">
+      <dt>Applied</dt><dd><%= niceDate(app.appliedOn) %></dd>
+      <dt>Next step</dt><dd><%= app.nextStepOn ? niceDate(app.nextStepOn) : "—" %></dd>
+    </dl>
+    <form method="post" action="/applications/<%= app.id %>/stage" class="stage-form">
+      <label>Stage
         <select name="stage">
           <% for (const s of stages) { %><option value="<%= s %>" <%= s === app.stage ? "selected" : "" %>><%= stageLabel(s) %></option><% } %>
         </select>
-        <input name="next_step_on" type="date" value="<%= app.nextStepOn ? toIso(app.nextStepOn) : "" %>">
-        <button>Save</button>
-      </form>
-    </td>
-    <td><%= niceDate(app.nextStepOn) %></td>
-  </tr>
+      </label>
+      <label>Next step date <input name="next_step_on" type="date" value="<%= app.nextStepOn ? toIso(app.nextStepOn) : "" %>"></label>
+      <button>Save</button>
+    </form>
+  </li>
   <% } %>
-</table>
+</ul>
+<% } %>
+</main>
 </body>
 </html>

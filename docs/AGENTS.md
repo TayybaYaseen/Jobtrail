@@ -38,6 +38,13 @@ JobTrail lab, keep the ones that apply: -->
   `src/errors.js`.
 - Tests live in `tests/`, mirroring `src/`, and run on
   `tests/fixtures/sample.json`, never on real data.
+- Every screen works at 360px wide: nothing scrolls sideways, text is at least
+  16px, fields stack one per line, and every button and field is at least
+  44px tall. Check it in DevTools at 360px and 768px (F2).
+- All styles live in `public/styles.css`: no inline `<style>` or `style=`.
+  Colours are only the CSS variables on `:root`; add a variable, never a
+  colour value elsewhere. No CSS framework, build step, icons or web fonts.
+- Every form field has a visible `<label>` around it, not only a placeholder.
 - <!-- add yours -->
 
 ## AI feature rules
