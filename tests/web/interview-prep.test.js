@@ -494,3 +494,10 @@ describe("when it fails (none of these count toward the limit)", () => {
   });
 });
 
+
+describe("Flow 3", () => {
+  test("step 1: tapping Ravi Systems on This Week opens the application", async () => {
+    const html = (await (await logIn()).get("/this-week")).text;
+    expect(html).toContain(`<a href="/applications/${RAVI}" class="week-link">Tue 20 Oct · Ravi Systems · interview (tomorrow)</a>`);
+  });
+});

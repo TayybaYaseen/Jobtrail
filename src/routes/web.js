@@ -108,7 +108,7 @@ function renderThisWeek(req, res, error = null) {
   const apps = listApplications(req.user.id);
   res.render("this-week", {
     today: now,
-    lines: thisWeek(apps, now).map((a) => describeNextStep(a, now)),
+    lines: thisWeek(apps, now).map((a) => ({ id: a.id, text: describeNextStep(a, now) })),
     followUps: followUps(apps, now).map((f) => ({ id: f.app.id, text: describeFollowUp(f) })),
     error,
     ...helpers,

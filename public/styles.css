@@ -321,6 +321,15 @@ form.stacked {
   text-decoration: underline;
 }
 
+/* This Week: tapping a line opens the application (Flow 3) */
+
+.week-link {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: inherit;
+}
+
 /* Application page and CVs */
 
 textarea {

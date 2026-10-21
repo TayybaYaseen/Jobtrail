@@ -6,7 +6,7 @@
 
 <ul class="week-list">
   <% if (lines.length === 0) { %><li class="muted">Nothing scheduled this week.</li><% } %>
-  <% for (const line of lines) { %><li><%= line %></li><% } %>
+  <% for (const line of lines) { %><li><a href="/applications/<%= line.id %>" class="week-link"><%= line.text %></a></li><% } %>
 </ul>
 
 <h2 class="section-heading">Follow up</h2>
