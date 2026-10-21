@@ -8,15 +8,20 @@ import { describe, expect, test } from "vitest";
 import { app } from "../../src/app.js";
 import { niceDate, stageLabel } from "../../src/formatting.js";
 import { listApplications } from "../../src/services/applications.js";
+import { addCv } from "../../src/services/cvs.js";
 import { ROOT } from "../../src/settings.js";
 import { logIn, testUserId } from "../helpers.js";
 
-/** Every page, as the user sees it: logged in for Applications and This Week. */
+/** Every page, as the user sees it. Logged out only for Log in and Sign up. */
 async function allPages() {
+  const cv = addCv(testUserId(), "CV v3 – backend", "My CV");
   const tab = await logIn();
   return {
     "/": (await tab.get("/")).text,
     "/this-week": (await tab.get("/this-week")).text,
+    "/cvs": (await tab.get("/cvs")).text,
+    "/cvs/:id": (await tab.get(`/cvs/${cv.id}`)).text,
+    "/applications/:id": (await tab.get("/applications/3")).text,
     "/login": (await request(app).get("/login")).text,
     "/signup": (await request(app).get("/signup")).text,
   };
@@ -83,7 +88,7 @@ describe("3. applications are cards, not a table", () => {
 describe("7. navigation", () => {
   test("shows Applications, This Week and Log out, and marks the current page", async () => {
     const tab = await logIn();
-    for (const [page, current] of [["/", "Applications"], ["/this-week", "This Week"]]) {
+    for (const [page, current] of [["/", "Applications"], ["/this-week", "This Week"], ["/cvs", "CVs"]]) {
       const html = (await tab.get(page)).text;
       const nav = html.match(/<nav[\s\S]*?<\/nav>/)[0];
       expect(nav).toContain('<a href="/"');
