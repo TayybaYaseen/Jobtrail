@@ -154,7 +154,8 @@ describe("4. an attached CV shows its name and links to its text, exactly as sav
 
     const r = await tab.get(`/cvs/${cv.id}`);
     expect(r.status).toBe(200);
-    expect(r.text).toContain(`<pre class="cv-text panel">\n${escaped(text)}</pre>`);
+    // The browser drops the one line break after <pre>, which is CRLF when git checks out with Windows line endings.
+    expect(r.text.match(/<pre class="cv-text panel">\r?\n([\s\S]*?)<\/pre>/)[1]).toBe(escaped(text));
     expect(cvRow(cv.id).text).toBe(text);
   });
 });
@@ -259,7 +260,7 @@ describe("9. applications from before this feature", () => {
     const page = await tab.get("/applications/1");
     expect(page.status).toBe(200);
     expect(page.text).toContain("Old Co");
-    expect(page.text).toMatch(/<textarea name="job_post" rows="10">\n<\/textarea>/);
+    expect(page.text).toMatch(/<textarea name="job_post" rows="10">\r?\n<\/textarea>/);
     expect(page.text).toContain("<dd>No CV chosen</dd>");
     expect((await tab.get("/api/applications/1")).body).toMatchObject({ job_post: null, cv: null });
 
