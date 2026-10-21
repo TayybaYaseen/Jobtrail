@@ -15,7 +15,8 @@
     "digest:demo": "node --env-file=demo.env scripts/weekly-digest.js",
     "import-json": "node scripts/import-json.js",
     "test": "vitest run",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "eval:prep": "node scripts/eval-prep.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.137.0",

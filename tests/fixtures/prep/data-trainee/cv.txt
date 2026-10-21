@@ -1,0 +1,20 @@
+Ahmed Raza
+Karachi · ahmed.raza@example.com
+
+Education
+BS Software Engineering, NED University, 2022–2026.
+Courses: Database Management Systems (A grade), Web Technologies, Object-Oriented Programming, Operating Systems.
+
+Projects
+Food Ordering Website (Final year project)
+- Built a food ordering site with PHP and MySQL for campus cafés.
+- Made the menu and order pages responsive for phones.
+
+Portfolio Site
+- Personal website made with HTML, CSS and JavaScript, hosted on GitHub Pages.
+
+Clinic Appointment App (Web Technologies course)
+- A Laravel web app where patients book appointments with doctors.
+
+Skills
+PHP, Laravel, MySQL, JavaScript, HTML, CSS, Git.

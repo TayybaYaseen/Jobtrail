@@ -1,0 +1,21 @@
+Ravi Systems · Junior Backend Engineer · Lahore (on-site)
+
+Ravi Systems builds billing software for pharmacies across Punjab. We're hiring a junior backend engineer to join our platform team of six.
+
+What you'll do
+- Design and build REST APIs in Node.js and Express.
+- Write and tune SQL queries for our PostgreSQL database.
+- Write unit and integration tests for the services you build.
+- Review pull requests and pair with senior engineers.
+- Help debug production issues using logs and metrics.
+
+What we're looking for
+- A degree in Computer Science or a related field (fresh graduates welcome).
+- Good understanding of HTTP, JSON and REST API design.
+- Comfortable writing SQL: joins, indexes, transactions.
+- Has used Git in a team.
+- Clear written English.
+
+Nice to have
+- Experience with authentication (sessions or JWT).
+- Any project deployed to a real server.

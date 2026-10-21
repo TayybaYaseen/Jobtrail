@@ -1,0 +1,16 @@
+Lahore Logic · QA Engineer (Entry Level) · Lahore
+
+We build mobile banking apps. Our QA team makes sure every release is safe to ship.
+
+You will
+- Write clear test cases from product requirements.
+- Run manual tests on Android and iOS builds before each release.
+- Write detailed bug reports with steps to reproduce, expected and actual results.
+- Retest fixed bugs and run regression tests.
+- Learn test automation with Selenium or Appium.
+
+You have
+- A degree in Computer Science or Software Engineering.
+- Attention to detail and patience.
+- Some experience testing software, in a job, internship or project.
+- Good written English for bug reports.

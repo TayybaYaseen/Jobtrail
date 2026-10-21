@@ -1,0 +1,23 @@
+Hira Khan
+Lahore · hira.khan@example.com
+
+Education
+BS Computer Science, FAST NUCES Lahore, 2022–2026. CGPA 3.4.
+Relevant courses: Database Systems, Software Engineering, Computer Networks, Web Engineering.
+
+Projects
+Library Management API (Final year project, 2025–2026)
+- Built a REST API in Node.js and Express for a university library, with SQLite for storage.
+- Designed endpoints for books, members and loans, with session-based login.
+- Wrote 40 Jest tests covering the loan rules.
+- Deployed it on a Railway server for the library staff to try.
+
+Expense Splitter (Web Engineering course, 2024)
+- A React app for splitting bills among friends, using local storage.
+
+Skills
+JavaScript, Node.js, Express, SQL (SQLite, MySQL), Git and GitHub, HTML, CSS, React basics.
+
+Experience
+Teaching Assistant, Programming Fundamentals, FAST Lahore (Fall 2025).
+- Ran weekly lab sessions for 40 first-year students and graded C++ assignments.

@@ -1,0 +1,18 @@
+Bilal Ahmed
+Islamabad · bilal.ahmed@example.com
+
+Education
+BS Computer Science, COMSATS Islamabad, 2022–2026.
+
+Projects
+Weather Dashboard (personal project)
+- Built a React dashboard that calls a public weather REST API and shows loading and error states.
+- Layout made with CSS grid and flexbox, works on phones.
+
+Shop Front (Web Engineering course)
+- A React shop front built from a Figma design, with tests in React Testing Library.
+
+Skills
+JavaScript, React, HTML, CSS, Git, Figma.
+
+GitHub: github.com/bilal-example
