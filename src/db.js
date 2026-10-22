@@ -82,6 +82,10 @@ const ADDED_COLUMNS = {
     cv_id: "INTEGER REFERENCES cvs(id)",
     last_changed_on: "TEXT", // set when it's added or its stage changes; null means use applied_on
     followed_up_on: "TEXT",
+    // F7: monthly, in rupees, whole numbers. The offer is kept when the stage moves on, but only shown at Offer.
+    salary_min: "INTEGER",
+    salary_max: "INTEGER",
+    salary_offered: "INTEGER",
   },
 };
 

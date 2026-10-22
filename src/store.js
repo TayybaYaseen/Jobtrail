@@ -43,6 +43,9 @@ export function toApplication(record) {
     cv: record.cv_id ? { id: record.cv_id, name: record.cv_name } : null,
     lastChangedOn: record.last_changed_on ? parseIsoDate(record.last_changed_on) : null,
     followedUpOn: record.followed_up_on ? parseIsoDate(record.followed_up_on) : null,
+    salaryMin: record.salary_min ?? null,
+    salaryMax: record.salary_max ?? null,
+    salaryOffered: record.salary_offered ?? null,
   });
 }
 

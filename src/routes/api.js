@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { parseIsoDate, toIso } from "../dates.js";
+import { shownOffer } from "../formatting.js";
 import { addApplication, getApplication, listApplications, moveStage, newestFirst } from "../services/applications.js";
 import { makePrep } from "../services/prep.js";
 import { followUps, label, thisWeek } from "../services/schedule.js";
@@ -16,6 +17,9 @@ export function appJson(app) {
     applied_on: toIso(app.appliedOn),
     stage: app.stage,
     next_step_on: app.nextStepOn ? toIso(app.nextStepOn) : null,
+    salary_min: app.salaryMin,
+    salary_max: app.salaryMax,
+    salary_offered: shownOffer(app), // null when the stage isn't Offer: kept, but hidden
   };
 }
 

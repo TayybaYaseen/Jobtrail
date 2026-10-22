@@ -32,6 +32,8 @@
     <dl class="dates">
       <dt>Applied</dt><dd><%= niceDate(app.appliedOn) %></dd>
       <dt>Next step</dt><dd><%= app.nextStepOn ? niceDate(app.nextStepOn) : "—" %></dd>
+      <% if (salaryRange(app)) { %><dt>Salary</dt><dd><%= salaryRange(app) %></dd><% } %>
+      <% if (describeOffer(app)) { %><dt>Offer</dt><dd><%= describeOffer(app) %></dd><% } %>
     </dl>
     <form method="post" action="/applications/<%= app.id %>/stage" class="stage-form">
       <label>Stage
