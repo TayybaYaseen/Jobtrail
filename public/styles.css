@@ -321,6 +321,15 @@ form.stacked {
   text-decoration: underline;
 }
 
+/* This Week: tapping a line opens the application (Flow 3) */
+
+.week-link {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: inherit;
+}
+
 /* Application page and CVs */
 
 textarea {
@@ -435,4 +444,66 @@ form.stacked-wide {
 
 .follow-up form {
   margin: 0;
+}
+
+/* Interview prep (F5) */
+
+.prep-panel h2 {
+  margin-bottom: 0.75rem;
+}
+
+.prep-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.prep-panel .prep-form {
+  margin-bottom: 0;
+}
+
+.prep-form p {
+  margin: 0;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.notice {
+  background: var(--accent-soft);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+}
+
+.prep-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: question;
+}
+
+.prep-list li {
+  counter-increment: question;
+}
+
+.prep-list h2::before {
+  content: counter(question) ". ";
+  color: var(--accent);
+}
+
+.quote-label {
+  margin: 1rem 0 0.25rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.prep-list blockquote {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border-inline-start: 4px solid var(--accent);
+  background: var(--bg);
+  white-space: pre-wrap;
 }

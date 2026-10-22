@@ -13,6 +13,11 @@ export function niceDate(date) {
   return `${DAYS[date.getUTCDay()]} ${day} ${MONTHS[date.getUTCMonth()]}`;
 }
 
+/** e.g. "19 Oct 2026" */
+export function longDate(date) {
+  return `${date.getUTCDate()} ${MONTHS[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
+}
+
 export function stageLabel(stage) {
   return stage.charAt(0).toUpperCase() + stage.slice(1);
 }

@@ -1,0 +1,5 @@
+<form method="post" action="/applications/<%= app.id %>/prep" class="prep-form">
+  <button<% if (cantPrep) { %> disabled aria-describedby="prep-reason"<% } %>><%= label %></button>
+  <% if (cantPrep) { %><p class="hint" id="prep-reason"><%= cantPrep %></p><% } %>
+  <p class="muted" role="status" data-loading hidden>Reading the job post and your CV… (up to 30 seconds)</p>
+</form>

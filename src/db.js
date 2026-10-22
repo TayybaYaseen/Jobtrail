@@ -51,6 +51,24 @@ CREATE TABLE IF NOT EXISTS cvs (
   added_on TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS cvs_user ON cvs(user_id);
+
+-- The saved interview prep, one per application. Regenerate replaces it.
+-- job_post_hash and cv_id say what it was made from, to spot later changes.
+CREATE TABLE IF NOT EXISTS preps (
+  application_id INTEGER PRIMARY KEY REFERENCES applications(id),
+  user_id        INTEGER NOT NULL REFERENCES users(id),
+  questions      TEXT NOT NULL,
+  created_on     TEXT NOT NULL,
+  job_post_hash  TEXT NOT NULL,
+  cv_id          INTEGER NOT NULL
+);
+
+-- One row per prep made, for the daily limit. Failed preps don't get one.
+CREATE TABLE IF NOT EXISTS prep_usage (
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  day     TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS prep_usage_user_day ON prep_usage(user_id, day);
 `;
 
 // Columns added after a table first shipped. Older databases get them when

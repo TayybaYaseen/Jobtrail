@@ -1,0 +1,17 @@
+Indus Analytics · Data Engineer Trainee (6-month program) · Karachi
+
+Indus Analytics helps retail chains understand their sales. Our trainee program takes fresh graduates and turns them into data engineers.
+
+Responsibilities
+- Build and maintain ETL pipelines that load sales data into our data warehouse.
+- Write SQL to clean, join and aggregate large tables.
+- Schedule and monitor batch jobs with Apache Airflow.
+- Write Python scripts to validate data quality.
+- Work with analysts to understand what reports they need.
+
+Requirements
+- BS in Computer Science, Data Science, Statistics or similar.
+- Strong SQL skills.
+- Basic Python.
+- Understanding of relational database design.
+- Curiosity about data and attention to detail.

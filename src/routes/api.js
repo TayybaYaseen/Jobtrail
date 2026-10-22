@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { parseIsoDate, toIso } from "../dates.js";
 import { addApplication, getApplication, listApplications, moveStage, newestFirst } from "../services/applications.js";
+import { makePrep } from "../services/prep.js";
 import { followUps, label, thisWeek } from "../services/schedule.js";
 import { today } from "../settings.js";
 
@@ -37,6 +38,12 @@ apiRouter.post("/applications/:id/stage", (req, res) => {
   const { stage, next_step_on } = req.body ?? {};
   const app = moveStage(req.user.id, Number(req.params.id), stage, next_step_on ? parseIsoDate(next_step_on) : null);
   res.json(appJson(app));
+});
+
+// Makes a new interview prep (F5), replacing the saved one. Takes up to 30 seconds.
+apiRouter.post("/applications/:id/prep", async (req, res) => {
+  const prep = await makePrep(req.user.id, Number(req.params.id));
+  res.json({ questions: prep.questions, created_on: toIso(prep.createdOn) });
 });
 
 apiRouter.get("/follow-ups", (req, res) => {

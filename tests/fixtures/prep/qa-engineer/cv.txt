@@ -1,0 +1,19 @@
+Sana Iqbal
+Lahore · sana.iqbal@example.com
+
+Education
+BS Computer Science, University of the Punjab, 2022–2026.
+
+Experience
+QA Intern, Systems Limited, Lahore (June–August 2025)
+- Wrote and ran over 120 test cases for a hospital management web app.
+- Logged 45 bugs in Jira with steps to reproduce and screenshots.
+- Took part in regression testing before two releases.
+- Recorded three Selenium scripts for the login and billing flows.
+
+Projects
+Quiz App (Mobile Application Development course)
+- An Android quiz app in Kotlin with a local SQLite database.
+
+Skills
+Manual testing, Jira, Selenium basics, SQL, Java, Kotlin.

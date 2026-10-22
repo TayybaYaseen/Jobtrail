@@ -13,6 +13,15 @@
   <dt>CV sent</dt><dd><% if (app.cv) { %><a href="/cvs/<%= app.cv.id %>"><%= app.cv.name %></a><% } else { %>No CV chosen<% } %></dd>
 </dl>
 
+<section class="panel prep-panel">
+  <h2>Interview prep</h2>
+  <% if (prep) { %>
+  <p class="hint"><a href="/applications/<%= app.id %>/prep">See your interview prep</a> (made on <%= longDate(prep.createdOn) %>)</p>
+  <% } else { %>
+  <%- include("partials/prep-button", { app, cantPrep, label: "Prepare for interview" }) %>
+  <% } %>
+</section>
+
 <% if (error) { %><p class="error" role="alert"><%= error %></p><% } %>
 <% if (saved) { %><p class="saved" role="status">Saved</p><% } %>
 

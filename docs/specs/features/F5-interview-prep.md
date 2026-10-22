@@ -1,6 +1,6 @@
 # F5 · Interview prep with sources
 
-**Status:** draft · **Suggested verdict:** v1
+**Status:** Approved · **Suggested verdict:** v1
 **Brief:** [00-product-brief.md](../00-product-brief.md) · **Flow:** [Flow 3](../01-user-flows.md#flow-3--prepare-for-an-interview)
 **Wishlist:** 1 (Can it help me prep for an interview?), from Hira
 **Needs:** F1 (per-user limits and storage), F3 (the job post and the CV sent)
@@ -76,6 +76,9 @@ reading.
   in the attached CV.
 - Each quote is 3 to 300 characters.
 - Between 5 and 8 questions are shown. No question appears twice.
+  *(Decided while building: the model is asked for up to 8, and at most 8 are
+  shown. If 3 or 4 survive the quote check they are still shown; below 3 is
+  criterion 4. The eval set holds good answers to 5–8.)*
 - Nothing from another user's data is ever in the prompt.
 
 **Judged against examples (an eval set):** five fixtures in
@@ -114,12 +117,12 @@ Timeout 30 seconds. 10 preps per user per day. The user waits 10–30 seconds.
 
 ## Done means
 
-- [ ] Every acceptance criterion has a passing test, with the AI client
+- [x] Every acceptance criterion has a passing test, with the AI client
       mocked.
-- [ ] The citation and shape checks have their own unit tests, including a
+- [x] The citation and shape checks have their own unit tests, including a
       made-up quote and invalid JSON.
 - [ ] The eval set runs with `npm run eval:prep` (real API, run by hand, not
       in `npm test`), and all five cases pass.
-- [ ] The API key is never in code, logs or responses.
-- [ ] Nothing from "Out of scope" was built.
-- [ ] `npm test` and `npm run lint` pass.
+- [x] The API key is never in code, logs or responses.
+- [x] Nothing from "Out of scope" was built.
+- [x] `npm test` and `npm run lint` pass.

@@ -71,6 +71,30 @@ npm run digest -- --email hira@example.com
 `npm run dev:demo` and `npm run digest:demo -- --email …` pin today to 19
 October 2026 (see `demo.env`), so the sample data always has a week ahead.
 
+## Interview prep
+
+On an application with a job post and the CV you sent, tap **Prepare for
+interview**. In up to 30 seconds you get 5 to 8 likely questions. Each one
+quotes the line of the job post it comes from (*Why they'll ask*) and the line
+of your CV to talk about (*Talk about*). JobTrail checks every quote word for
+word against the two documents and drops any question it can't find, so
+nothing shown is made up. The prep is saved: opening it again makes no new AI
+call. **Regenerate** makes a new one. Everyone gets 10 preps a day.
+
+It calls Claude (`claude-sonnet-5-5`) and needs an API key on the server:
+
+```bash
+ANTHROPIC_API_KEY=sk-ant-... npm run dev
+```
+
+Without the key the button is disabled and says so. The tests never call the
+API. To check the prompt against the five example job posts and CVs in
+`tests/fixtures/prep/` with the real API (5 calls, a few cents):
+
+```bash
+ANTHROPIC_API_KEY=sk-ant-... npm run eval:prep
+```
+
 ## API
 
 - `GET /api/applications`
@@ -79,3 +103,4 @@ October 2026 (see `demo.env`), so the sample data always has a week ahead.
 - `POST /api/applications/:id/stage`
 - `GET /api/this-week`
 - `GET /api/follow-ups` (each with `days_silent`)
+- `POST /api/applications/:id/prep` makes an interview prep: `{ questions: [{ question, why: { quote }, talk_about: { quote } }], created_on }`
