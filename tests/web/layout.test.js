@@ -22,6 +22,7 @@ async function allPages() {
     "/cvs": (await tab.get("/cvs")).text,
     "/cvs/:id": (await tab.get(`/cvs/${cv.id}`)).text,
     "/settings": (await tab.get("/settings")).text,
+    "/referrals": (await tab.get("/referrals")).text,
     "/applications/:id": (await tab.get("/applications/3")).text,
     "/login": (await request(app).get("/login")).text,
     "/signup": (await request(app).get("/signup")).text,
