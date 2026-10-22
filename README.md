@@ -95,6 +95,16 @@ API. To check the prompt against the five example job posts and CVs in
 ANTHROPIC_API_KEY=sk-ant-... npm run eval:prep
 ```
 
+## Salary
+
+On an application's page, note the advertised monthly range in rupees
+(minimum, maximum or both; `80,000` and `80000` both work). At stage
+**Offer** there's also the monthly amount offered. The card then shows, say,
+**Salary** Rs 80,000 – 120,000 and **Offer** Rs 110,000 (within range), or
+(below range) / (above range). If the stage moves on from Offer, the amount
+is kept but hidden, and comes back if the stage returns to Offer. An offer's
+deadline is its **Next step date**.
+
 ## Dark mode
 
 **Settings** has a theme: **Auto** (the default) follows your phone or
@@ -107,7 +117,7 @@ of each text and background pair is checked by `npm test`.
 
 ## API
 
-- `GET /api/applications`
+- `GET /api/applications` (each with `salary_min`, `salary_max` and `salary_offered`: monthly rupees or `null`; `salary_offered` is `null` unless the stage is Offer)
 - `POST /api/applications`
 - `GET /api/applications/:id` (with `job_post` and `cv`)
 - `POST /api/applications/:id/stage`

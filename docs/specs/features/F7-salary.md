@@ -1,6 +1,6 @@
 # F7 · Salary range and offer
 
-**Status:** draft · **Suggested verdict:** later
+**Status:** Approved · **Suggested verdict:** later
 **Brief:** [00-product-brief.md](../00-product-brief.md) · **Flow:** adding an application, getting an offer
 **Wishlist:** 5 (Salary)
 **Needs:** F1, F3 (the application page is where salary is entered)
@@ -65,12 +65,14 @@ an offer is low for the role.
 
 ## Open questions
 
-- [ ] Should the offer have a deadline date? (It could reuse `next_step_on`,
+- [x] Should the offer have a deadline date? (It could reuse `next_step_on`,
       as the seed data already does for "Offer deadline".)
+      **Answer:** Reuse `next_step_on`. An application at Offer already has a
+      Next step date on its card and in This Week, so no new field.
 
 ## Done means
 
-- [ ] Every acceptance criterion has a passing test.
-- [ ] `EXAMPLE-salary-range.md` is deleted.
-- [ ] Old data still loads.
-- [ ] `npm test` and `npm run lint` pass.
+- [x] Every acceptance criterion has a passing test.
+- [x] `EXAMPLE-salary-range.md` is deleted.
+- [x] Old data still loads.
+- [x] `npm test` and `npm run lint` pass.
