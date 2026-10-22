@@ -23,6 +23,9 @@ export function loadUser(req, res, next) {
   req.sessionToken = readCookie(req, COOKIE);
   req.user = userForSession(req.sessionToken);
   res.locals.user = req.user;
+  // F6: the page is sent with the theme already on <html>, so it never flashes white.
+  // Logged out (Log in, Sign up) means Auto: follow the device.
+  res.locals.theme = req.user?.theme ?? "auto";
   next();
 }
 

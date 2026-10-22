@@ -74,6 +74,9 @@ CREATE INDEX IF NOT EXISTS prep_usage_user_day ON prep_usage(user_id, day);
 // Columns added after a table first shipped. Older databases get them when
 // they're opened; their applications start with no job post and no CV.
 const ADDED_COLUMNS = {
+  users: {
+    theme: "TEXT", // "light" or "dark"; null (or anything else) means Auto, which follows the device
+  },
   applications: {
     job_post: "TEXT",
     cv_id: "INTEGER REFERENCES cvs(id)",

@@ -1,0 +1,17 @@
+<%- include("partials/header", { title: "Settings · JobTrail" }) %>
+<h1>Settings</h1>
+
+<% if (saved) { %><p class="saved" role="status">Saved</p><% } %>
+
+<form method="post" action="/settings" class="panel stacked">
+  <fieldset class="choices">
+    <legend>Theme</legend>
+    <% for (const [value, label] of [["auto", "Auto (follows your phone or computer)"], ["light", "Light"], ["dark", "Dark"]]) { %>
+    <label><input type="radio" name="theme" value="<%= value %>"<% if (theme === value) { %> checked<% } %>> <%= label %></label>
+    <% } %>
+  </fieldset>
+  <button>Save</button>
+</form>
+</main>
+</body>
+</html>

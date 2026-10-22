@@ -1,19 +1,60 @@
 /* JobTrail: the only stylesheet. Mobile first: works at 360px, grows from 768px.
-   Every colour is a variable here, so dark mode (F6) is just a second set of values. */
+   Every colour is a variable in the theme blocks below; nothing else names a colour. */
 
+/* Light theme (F6): the default, and always used for printing */
 :root {
+  color-scheme: light;
   --bg: #f6f6f8;
   --surface: #ffffff;
   --text: #1f1f24;
   --muted: #5c5c66;
-  --border: #d9d9e0;
+  --border: #8a8a96;
   --accent: #6d28d9;
   --accent-hover: #5b21b6;
   --accent-soft: #ede9fe;
   --accent-text: #ffffff;
   --error: #b00020;
   --error-soft: #fdecee;
-  --focus: #a78bfa;
+  --focus: #7c3aed;
+}
+
+/* Dark theme (F6): chosen in Settings (data-theme="dark" on <html>), or Auto
+   (no data-theme) with the device set to dark. Screen only, so a printed page
+   is always light. The two blocks hold the same values: keep them in step. */
+@media screen {
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #121216;
+    --surface: #1c1c23;
+    --text: #ececf1;
+    --muted: #a9a9b6;
+    --border: #6e6e7c;
+    --accent: #b79cff;
+    --accent-hover: #cbb8ff;
+    --accent-soft: #2e2650;
+    --accent-text: #16121f;
+    --error: #ff8f9f;
+    --error-soft: #3a1a22;
+    --focus: #a78bfa;
+  }
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --bg: #121216;
+    --surface: #1c1c23;
+    --text: #ececf1;
+    --muted: #a9a9b6;
+    --border: #6e6e7c;
+    --accent: #b79cff;
+    --accent-hover: #cbb8ff;
+    --accent-soft: #2e2650;
+    --accent-text: #16121f;
+    --error: #ff8f9f;
+    --error-soft: #3a1a22;
+    --focus: #a78bfa;
+  }
 }
 
 *,
@@ -506,4 +547,36 @@ form.stacked-wide {
   border-inline-start: 4px solid var(--accent);
   background: var(--bg);
   white-space: pre-wrap;
+}
+
+/* Settings (F6): one choice per line, each line a 44px tap target */
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.choices legend {
+  padding: 0;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+.choices label {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  font-weight: 400;
+}
+
+.choices input {
+  width: 1.25rem;
+  min-height: 1.25rem;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--accent);
 }

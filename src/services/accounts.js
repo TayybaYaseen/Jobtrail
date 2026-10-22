@@ -89,11 +89,23 @@ export function userForSession(token) {
   if (!token) return null;
   const row = getDb()
     .prepare(
-      `SELECT users.id, users.email FROM sessions JOIN users ON users.id = sessions.user_id
+      `SELECT users.id, users.email, users.theme FROM sessions JOIN users ON users.id = sessions.user_id
        WHERE sessions.token_hash = ? AND sessions.expires_at > ?`,
     )
     .get(hashToken(token), Date.now());
-  return row ? { id: row.id, email: row.email } : null;
+  return row ? { id: row.id, email: row.email, theme: themeOf(row.theme) } : null;
+}
+
+// F6 · Dark mode. The choice is saved on the account, so every device uses it.
+
+/** "light", "dark" or "auto". Anything that isn't Light or Dark counts as Auto. */
+export function themeOf(value) {
+  return value === "light" || value === "dark" ? value : "auto";
+}
+
+export function setTheme(userId, theme) {
+  theme = themeOf(theme);
+  getDb().prepare("UPDATE users SET theme = ? WHERE id = ?").run(theme === "auto" ? null : theme, userId);
 }
 
 export function endSession(token) {
