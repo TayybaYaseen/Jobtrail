@@ -29,6 +29,34 @@ export function hasNextStep(app) {
   return WITH_NEXT_STEP.has(app.stage);
 }
 
+// F7 · Salary. "120,000": commas every three digits, as job posts write it.
+const grouped = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+const rupees = (n) => `Rs ${grouped(n)}`;
+
+/** "Rs 80,000 – 120,000", "From Rs 80,000", "Up to Rs 120,000", or null with no salary. */
+export function salaryRange({ salaryMin: min, salaryMax: max }) {
+  if (min !== null && max !== null) return `${rupees(min)} – ${grouped(max)}`;
+  if (min !== null) return `From ${rupees(min)}`;
+  if (max !== null) return `Up to ${rupees(max)}`;
+  return null;
+}
+
+/** The offer, only while the stage is Offer. null when it's hidden or there's none. */
+export function shownOffer(app) {
+  return app.stage === "offer" ? app.salaryOffered : null;
+}
+
+/** e.g. "Rs 110,000 (within range)", or just "Rs 110,000" with no range. null with no offer shown. */
+export function describeOffer(app) {
+  const offer = shownOffer(app);
+  if (offer === null) return null;
+  const { salaryMin: min, salaryMax: max } = app;
+  if (min === null && max === null) return rupees(offer);
+  if (min !== null && offer < min) return `${rupees(offer)} (below range)`;
+  if (max !== null && offer > max) return `${rupees(offer)} (above range)`;
+  return `${rupees(offer)} (within range)`;
+}
+
 /** e.g. "Margalla Tech · no reply for 35 days" */
 export function describeFollowUp({ app, daysSilent }) {
   return `${app.company} · no reply for ${daysSilent} days`;

@@ -1,5 +1,13 @@
 import { Router } from "express";
-import { describeFollowUp, describeNextStep, longDate, niceDate, stageLabel } from "../formatting.js";
+import {
+  describeFollowUp,
+  describeNextStep,
+  describeOffer,
+  longDate,
+  niceDate,
+  salaryRange,
+  stageLabel,
+} from "../formatting.js";
 import { parseIsoDate, toIso } from "../dates.js";
 import { AppError } from "../errors.js";
 import { STAGES } from "../models.js";
@@ -10,7 +18,9 @@ import {
   markFollowedUp,
   moveStage,
   newestFirst,
+  parseSalaryForm,
   saveJobPostAndCv,
+  saveSalary,
 } from "../services/applications.js";
 import { setTheme } from "../services/accounts.js";
 import { addCv, deleteCv, getCv, listCvs } from "../services/cvs.js";
@@ -20,7 +30,14 @@ import { today } from "../settings.js";
 
 export const webRouter = Router();
 
-const helpers = { longDate, niceDate, stageLabel, toIso };
+const helpers = { describeOffer, longDate, niceDate, salaryRange, stageLabel, toIso };
+
+/** What the salary fields show: the saved numbers, or "" when there's none. */
+const salaryFields = (app) => ({
+  salaryMin: app.salaryMin ?? "",
+  salaryMax: app.salaryMax ?? "",
+  salaryOffered: app.salaryOffered ?? "",
+});
 
 /** A CV picker's value: "" is "No CV chosen". Anything else that isn't a CV id is a 404 later. */
 const cvIdFrom = (value) => (value ? Number(value) : null);
@@ -57,6 +74,7 @@ webRouter.get("/applications/:id", (req, res) => {
     cvs: listCvs(req.user.id),
     jobPost: app.jobPost ?? "",
     cvId: app.cv?.id ?? null,
+    ...salaryFields(app),
     saved: req.query.saved === "1",
     error: null,
     ...helpers,
@@ -65,16 +83,24 @@ webRouter.get("/applications/:id", (req, res) => {
 
 webRouter.post("/applications/:id", (req, res) => {
   const id = Number(req.params.id);
-  const { job_post = "", cv_id = "" } = req.body ?? {};
+  const { job_post = "", cv_id = "", salary_min, salary_max, salary_offered } = req.body ?? {};
+  // A form without the salary fields (an older page) leaves the salary as it is.
+  const hasSalary = [salary_min, salary_max, salary_offered].some((v) => v !== undefined);
   const data = () => ({
     ...getPrep(req.user.id, id), // app, prep, changed, cantPrep
     cvs: listCvs(req.user.id),
     jobPost: job_post,
     cvId: cvIdFrom(cv_id),
+    salaryMin: salary_min ?? "",
+    salaryMax: salary_max ?? "",
+    salaryOffered: salary_offered ?? "",
     saved: false,
   });
   renderOnAppError(res, "application", data, () => {
+    // Everything is checked before anything is written, so an error saves nothing.
+    const salary = hasSalary ? parseSalaryForm(salary_min, salary_max, salary_offered) : null;
     saveJobPostAndCv(req.user.id, id, job_post, cvIdFrom(cv_id));
+    if (salary) saveSalary(req.user.id, id, salary);
     res.redirect(303, `/applications/${id}?saved=1`);
   });
 });

@@ -11,7 +11,8 @@ import { followUps } from "./schedule.js";
 // application looks exactly like one that doesn't exist: 404.
 
 const COLUMNS =
-  "id, company, role, source, applied_on, applied_on_raw, stage, next_step_on, notes, last_changed_on, followed_up_on";
+  "id, company, role, source, applied_on, applied_on_raw, stage, next_step_on, notes, last_changed_on, followed_up_on, " +
+  "salary_min, salary_max, salary_offered";
 
 const INSERT = `INSERT INTO applications
   (user_id, company, role, source, applied_on, applied_on_raw, stage, next_step_on, notes)
@@ -77,6 +78,45 @@ export function saveJobPostAndCv(userId, id, jobPost, cvId) {
   getDb()
     .prepare("UPDATE applications SET job_post = ?, cv_id = ? WHERE id = ? AND user_id = ?")
     .run(jobPost, cvId, id, userId);
+  return getApplication(userId, id);
+}
+
+// F7 · Salary. Monthly, in rupees.
+const MAX_SALARY = 10_000_000;
+
+/** A typed salary as a whole number, or null when it's blank. "80,000" is 80000. */
+export function parseSalary(text) {
+  const value = String(text ?? "").trim().replaceAll(",", "");
+  if (value === "") return null;
+  if (/^-\d+$/.test(value)) throw new AppError("BAD_SALARY", "Salary must be more than 0.");
+  if (!/^\d+$/.test(value)) throw new AppError("BAD_SALARY", "Use numbers only, like 80000.");
+  const n = Number(value);
+  if (n === 0) throw new AppError("BAD_SALARY", "Salary must be more than 0.");
+  if (n > MAX_SALARY) throw new AppError("BAD_SALARY", "That looks too high. Check the number.");
+  return n;
+}
+
+/**
+ * Checks a typed range and offer, and returns them as numbers (or null), ready
+ * for saveSalary. Throws before anything is saved.
+ */
+export function parseSalaryForm(min, max, offered) {
+  const salary = { min: parseSalary(min), max: parseSalary(max), offered: parseSalary(offered) };
+  if (salary.min !== null && salary.max !== null && salary.min > salary.max) {
+    throw new AppError("BAD_SALARY_RANGE", "Minimum can't be more than maximum.");
+  }
+  return salary;
+}
+
+/**
+ * Saves the range. The offer is saved only at stage Offer, where its field is
+ * shown; at other stages the saved offer is kept as it is.
+ */
+export function saveSalary(userId, id, { min, max, offered }) {
+  const app = getApplication(userId, id); // 404 if it isn't theirs
+  getDb()
+    .prepare("UPDATE applications SET salary_min = ?, salary_max = ?, salary_offered = ? WHERE id = ? AND user_id = ?")
+    .run(min, max, app.stage === "offer" ? offered : app.salaryOffered, id, userId);
   return getApplication(userId, id);
 }
 

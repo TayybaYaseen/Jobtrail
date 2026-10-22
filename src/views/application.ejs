@@ -10,6 +10,8 @@
 <dl class="dates panel">
   <dt>Applied</dt><dd><%= niceDate(app.appliedOn) %></dd>
   <dt>Next step</dt><dd><%= app.nextStepOn ? niceDate(app.nextStepOn) : "—" %></dd>
+  <% if (salaryRange(app)) { %><dt>Salary</dt><dd><%= salaryRange(app) %></dd><% } %>
+  <% if (describeOffer(app)) { %><dt>Offer</dt><dd><%= describeOffer(app) %></dd><% } %>
   <dt>CV sent</dt><dd><% if (app.cv) { %><a href="/cvs/<%= app.cv.id %>"><%= app.cv.name %></a><% } else { %>No CV chosen<% } %></dd>
 </dl>
 
@@ -35,6 +37,11 @@
     </select>
   </label>
   <p class="hint"><a href="/cvs">Add a CV</a></p>
+  <label>Minimum monthly salary (Rs) <input name="salary_min" inputmode="numeric" value="<%= salaryMin %>"></label>
+  <label>Maximum monthly salary (Rs) <input name="salary_max" inputmode="numeric" value="<%= salaryMax %>"></label>
+  <% if (app.stage === "offer") { %>
+  <label>Monthly amount offered (Rs) <input name="salary_offered" inputmode="numeric" value="<%= salaryOffered %>"></label>
+  <% } %>
   <button>Save</button>
 </form>
 </main>
