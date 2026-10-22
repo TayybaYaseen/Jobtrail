@@ -26,6 +26,7 @@
       <div>
         <h2><a class="card-link" href="/applications/<%= app.id %>"><%= app.company %></a></h2>
         <p class="role"><%= app.role %></p>
+        <% if (app.referrer) { %><p class="referral">Referred by <%= app.referrer.name %></p><% } %>
       </div>
       <span class="stage"><%= stageLabel(app.stage) %></span>
     </div>

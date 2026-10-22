@@ -13,6 +13,11 @@ export function niceDate(date) {
   return `${DAYS[date.getUTCDay()]} ${day} ${MONTHS[date.getUTCMonth()]}`;
 }
 
+/** e.g. "19 Oct" */
+export function dayMonth(date) {
+  return `${date.getUTCDate()} ${MONTHS[date.getUTCMonth()]}`;
+}
+
 /** e.g. "19 Oct 2026" */
 export function longDate(date) {
   return `${date.getUTCDate()} ${MONTHS[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
@@ -55,6 +60,14 @@ export function describeOffer(app) {
   if (min !== null && offer < min) return `${rupees(offer)} (below range)`;
   if (max !== null && offer > max) return `${rupees(offer)} (above range)`;
   return `${rupees(offer)} (within range)`;
+}
+
+// F8 · What to tell the referrer, by stage.
+const NEWS = { interview: "you reached Interview.", offer: "you reached Offer.", rejected: "the answer was no." };
+
+/** e.g. "Tell Ahmed Khan about Ravi Systems: you reached Interview." */
+export function describeThankYou(app) {
+  return `Tell ${app.referrer.name} about ${app.company}: ${NEWS[app.stage]}`;
 }
 
 /** e.g. "Margalla Tech · no reply for 35 days" */

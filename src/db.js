@@ -86,6 +86,11 @@ const ADDED_COLUMNS = {
     salary_min: "INTEGER",
     salary_max: "INTEGER",
     salary_offered: "INTEGER",
+    // F8: who referred me (one per application), and when I last thanked them.
+    referrer_name: "TEXT",
+    referrer_how: "TEXT",
+    referrer_contact: "TEXT",
+    referrer_thanked_on: "TEXT",
   },
 };
 

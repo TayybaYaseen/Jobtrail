@@ -25,6 +25,22 @@
   <% } %>
 </ul>
 <% } %>
+
+<% if (thankYous.length > 0) { %>
+<h2 class="section-heading">Say thanks</h2>
+<p class="muted">Someone referred you, and there's news. Let them know, then tap <strong>Thanked</strong>.</p>
+<ul class="week-list thank-yous">
+  <% for (const t of thankYous) { %>
+  <li class="follow-up">
+    <span><%= t.text %></span>
+    <form method="post" action="/applications/<%= t.id %>/thanked">
+      <input type="hidden" name="back" value="/this-week">
+      <button class="secondary">Thanked</button>
+    </form>
+  </li>
+  <% } %>
+</ul>
+<% } %>
 </main>
 </body>
 </html>

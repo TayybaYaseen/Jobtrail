@@ -9,6 +9,8 @@ export const NEXT_STEP_STAGES = ["screening", "interview", "offer"];
  * jobPost is the pasted job post or null; cv is the CV sent ({ id, name }) or null.
  * lastChangedOn (added, or stage changed) and followedUpOn are Dates or null.
  * salaryMin, salaryMax and salaryOffered are monthly rupees (whole numbers) or null.
+ * referrer is { name, how, contact, thankedOn } or null; how and contact can be null,
+ * thankedOn is a Date or null.
  */
 export function makeApplication({
   id,
@@ -26,9 +28,10 @@ export function makeApplication({
   salaryMin = null,
   salaryMax = null,
   salaryOffered = null,
+  referrer = null,
 }) {
   return {
     id, company, role, source, appliedOn, stage, nextStepOn, notes, jobPost, cv, lastChangedOn, followedUpOn,
-    salaryMin, salaryMax, salaryOffered,
+    salaryMin, salaryMax, salaryOffered, referrer,
   };
 }

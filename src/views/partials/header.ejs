@@ -26,7 +26,7 @@
     <div class="site-nav-inner">
       <span class="brand">JobTrail</span>
       <% if (locals.user) { %>
-      <% for (const [href, label] of [["/", "Applications"], ["/this-week", "This Week"], ["/cvs", "CVs"], ["/settings", "Settings"]]) { %>
+      <% for (const [href, label] of [["/", "Applications"], ["/this-week", "This Week"], ["/cvs", "CVs"], ["/referrals", "Referrals"], ["/settings", "Settings"]]) { %>
       <a href="<%= href %>"<% if (locals.currentPath === href) { %> aria-current="page"<% } %>><%= label %></a>
       <% } %>
       <form method="post" action="/logout"><button class="secondary">Log out</button></form>

@@ -1,8 +1,10 @@
 import { Router } from "express";
 import {
+  dayMonth,
   describeFollowUp,
   describeNextStep,
   describeOffer,
+  describeThankYou,
   longDate,
   niceDate,
   salaryRange,
@@ -25,18 +27,26 @@ import {
 import { setTheme } from "../services/accounts.js";
 import { addCv, deleteCv, getCv, listCvs } from "../services/cvs.js";
 import { getPrep, makePrep } from "../services/prep.js";
+import { markThanked, parseReferrer, referrals, saveReferrer, thankYous } from "../services/referrals.js";
 import { followUps, thisWeek } from "../services/schedule.js";
 import { today } from "../settings.js";
 
 export const webRouter = Router();
 
-const helpers = { describeOffer, longDate, niceDate, salaryRange, stageLabel, toIso };
+const helpers = { dayMonth, describeOffer, longDate, niceDate, salaryRange, stageLabel, toIso };
 
 /** What the salary fields show: the saved numbers, or "" when there's none. */
 const salaryFields = (app) => ({
   salaryMin: app.salaryMin ?? "",
   salaryMax: app.salaryMax ?? "",
   salaryOffered: app.salaryOffered ?? "",
+});
+
+/** What the referrer fields show. */
+const referrerFields = (app) => ({
+  referrerName: app.referrer?.name ?? "",
+  referrerHow: app.referrer?.how ?? "",
+  referrerContact: app.referrer?.contact ?? "",
 });
 
 /** A CV picker's value: "" is "No CV chosen". Anything else that isn't a CV id is a 404 later. */
@@ -75,6 +85,7 @@ webRouter.get("/applications/:id", (req, res) => {
     jobPost: app.jobPost ?? "",
     cvId: app.cv?.id ?? null,
     ...salaryFields(app),
+    ...referrerFields(app),
     saved: req.query.saved === "1",
     error: null,
     ...helpers,
@@ -84,8 +95,10 @@ webRouter.get("/applications/:id", (req, res) => {
 webRouter.post("/applications/:id", (req, res) => {
   const id = Number(req.params.id);
   const { job_post = "", cv_id = "", salary_min, salary_max, salary_offered } = req.body ?? {};
-  // A form without the salary fields (an older page) leaves the salary as it is.
+  const { referrer_name, referrer_how, referrer_contact } = req.body ?? {};
+  // A form without the salary or referrer fields (an older page) leaves those as they are.
   const hasSalary = [salary_min, salary_max, salary_offered].some((v) => v !== undefined);
+  const hasReferrer = [referrer_name, referrer_how, referrer_contact].some((v) => v !== undefined);
   const data = () => ({
     ...getPrep(req.user.id, id), // app, prep, changed, cantPrep
     cvs: listCvs(req.user.id),
@@ -94,13 +107,18 @@ webRouter.post("/applications/:id", (req, res) => {
     salaryMin: salary_min ?? "",
     salaryMax: salary_max ?? "",
     salaryOffered: salary_offered ?? "",
+    referrerName: referrer_name ?? "",
+    referrerHow: referrer_how ?? "",
+    referrerContact: referrer_contact ?? "",
     saved: false,
   });
   renderOnAppError(res, "application", data, () => {
     // Everything is checked before anything is written, so an error saves nothing.
     const salary = hasSalary ? parseSalaryForm(salary_min, salary_max, salary_offered) : null;
+    const referrer = hasReferrer ? parseReferrer(referrer_name, referrer_how, referrer_contact) : undefined;
     saveJobPostAndCv(req.user.id, id, job_post, cvIdFrom(cv_id));
     if (salary) saveSalary(req.user.id, id, salary);
+    if (referrer !== undefined) saveReferrer(req.user.id, id, referrer);
     res.redirect(303, `/applications/${id}?saved=1`);
   });
 });
@@ -137,6 +155,7 @@ function renderThisWeek(req, res, error = null) {
     today: now,
     lines: thisWeek(apps, now).map((a) => ({ id: a.id, text: describeNextStep(a, now) })),
     followUps: followUps(apps, now).map((f) => ({ id: f.app.id, text: describeFollowUp(f) })),
+    thankYous: thankYous(apps).map((a) => ({ id: a.id, text: describeThankYou(a) })),
     error,
     ...helpers,
   });
@@ -186,4 +205,26 @@ webRouter.get("/settings", (req, res) => {
 webRouter.post("/settings", (req, res) => {
   setTheme(req.user.id, req.body?.theme);
   res.redirect(303, "/settings?saved=1");
+});
+
+// F8 · Referrals. Thanked saves today; it's on the Referrals page and in This Week.
+function renderReferrals(req, res, error = null) {
+  res.render("referrals", { referrals: referrals(listApplications(req.user.id)), error, ...helpers });
+}
+
+webRouter.get("/referrals", (req, res) => renderReferrals(req, res));
+
+// Only these two pages have a Thanked button, so only they can be gone back to.
+const THANKED_FROM = { "/referrals": renderReferrals, "/this-week": renderThisWeek };
+
+webRouter.post("/applications/:id/thanked", (req, res) => {
+  const back = Object.hasOwn(THANKED_FROM, req.body?.back) ? req.body.back : "/referrals";
+  try {
+    markThanked(req.user.id, Number(req.params.id));
+  } catch (err) {
+    if (!(err instanceof AppError) || err.status !== 404) throw err;
+    // Removed in another tab (or never mine): say so, and show the list as it is now.
+    return THANKED_FROM[back](req, res.status(404), "That referral no longer exists.");
+  }
+  res.redirect(303, back);
 });

@@ -4,6 +4,7 @@
   <div>
     <h1><%= app.company %></h1>
     <p class="role"><%= app.role %></p>
+    <% if (app.referrer) { %><p class="referral">Referred by <%= app.referrer.name %></p><% } %>
   </div>
   <span class="stage"><%= stageLabel(app.stage) %></span>
 </div>
@@ -42,6 +43,12 @@
   <% if (app.stage === "offer") { %>
   <label>Monthly amount offered (Rs) <input name="salary_offered" inputmode="numeric" value="<%= salaryOffered %>"></label>
   <% } %>
+  <fieldset class="field-group">
+    <legend>Referred by</legend>
+    <label>Name <input name="referrer_name" value="<%= referrerName %>"></label>
+    <label>How I know them (optional) <input name="referrer_how" value="<%= referrerHow %>"></label>
+    <label>Contact (optional) <input name="referrer_contact" value="<%= referrerContact %>"></label>
+  </fieldset>
   <button>Save</button>
 </form>
 </main>

@@ -12,7 +12,7 @@ import { followUps } from "./schedule.js";
 
 const COLUMNS =
   "id, company, role, source, applied_on, applied_on_raw, stage, next_step_on, notes, last_changed_on, followed_up_on, " +
-  "salary_min, salary_max, salary_offered";
+  "salary_min, salary_max, salary_offered, referrer_name, referrer_how, referrer_contact, referrer_thanked_on";
 
 const INSERT = `INSERT INTO applications
   (user_id, company, role, source, applied_on, applied_on_raw, stage, next_step_on, notes)
