@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en"<% if (locals.theme === "light" || locals.theme === "dark") { %> data-theme="<%= locals.theme %>"<% } %>>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="<%= locals.theme === "light" || locals.theme === "dark" ? locals.theme : "light dark" %>">
   <title><%= title %></title>
   <link rel="stylesheet" href="/styles.css">
   <script>
@@ -25,7 +26,7 @@
     <div class="site-nav-inner">
       <span class="brand">JobTrail</span>
       <% if (locals.user) { %>
-      <% for (const [href, label] of [["/", "Applications"], ["/this-week", "This Week"], ["/cvs", "CVs"]]) { %>
+      <% for (const [href, label] of [["/", "Applications"], ["/this-week", "This Week"], ["/cvs", "CVs"], ["/settings", "Settings"]]) { %>
       <a href="<%= href %>"<% if (locals.currentPath === href) { %> aria-current="page"<% } %>><%= label %></a>
       <% } %>
       <form method="post" action="/logout"><button class="secondary">Log out</button></form>

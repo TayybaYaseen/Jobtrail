@@ -1,6 +1,6 @@
 # F6 · Dark mode
 
-**Status:** draft · **Suggested verdict:** later
+**Status:** Approved · **Suggested verdict:** later
 **Brief:** [00-product-brief.md](../00-product-brief.md) · **Flow:** all screens
 **Wishlist:** 9 (Dark mode)
 **Needs:** F2 (all colours are CSS variables in `public/styles.css`), F1 (the choice is saved per user)
@@ -50,12 +50,14 @@ that it's comfortable to read in the dark.
 
 ## Open questions
 
-- [ ] Should there also be a toggle in the nav, or is Settings enough?
-      (Proposal: Settings only.)
+- [x] Should there also be a toggle in the nav, or is Settings enough?
+      **Answer:** Settings only, as proposed. The nav gets a Settings link.
 
 ## Done means
 
-- [ ] Criteria 2, 3 and 6 have passing tests. 1, 4 and 5 are checked by hand
-      in DevTools, with screenshots of both themes in the PR.
-- [ ] No colour value appears in `styles.css` outside the theme variables.
-- [ ] `npm test` and `npm run lint` pass.
+- [x] Criteria 2, 3 and 6 have passing tests. 1, 4 and 5 are checked by hand
+      in DevTools, with screenshots of both themes in the PR. (They also have
+      tests: the CSS rule for 1, contrast computed from `styles.css` for 4, and
+      the theme in the sent HTML for 5.)
+- [x] No colour value appears in `styles.css` outside the theme variables.
+- [x] `npm test` and `npm run lint` pass.

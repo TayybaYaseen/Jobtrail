@@ -21,6 +21,7 @@ async function allPages() {
     "/this-week": (await tab.get("/this-week")).text,
     "/cvs": (await tab.get("/cvs")).text,
     "/cvs/:id": (await tab.get(`/cvs/${cv.id}`)).text,
+    "/settings": (await tab.get("/settings")).text,
     "/applications/:id": (await tab.get("/applications/3")).text,
     "/login": (await request(app).get("/login")).text,
     "/signup": (await request(app).get("/signup")).text,
@@ -47,10 +48,11 @@ describe("1. one stylesheet, served from public/", () => {
 });
 
 describe("2. colours are CSS variables", () => {
-  test("every colour value is defined on :root and nowhere else", () => {
+  test("every colour value is defined in a :root theme block and nowhere else", () => {
     const css = fs.readFileSync(path.join(ROOT, "public", "styles.css"), "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
     const root = css.match(/:root\s*\{([^}]*)\}/)[1];
-    const rest = css.replace(/:root\s*\{[^}]*\}/, "");
+    // F6: the dark theme blocks are :root[data-theme="dark"] and :root:not([data-theme])
+    const rest = css.replace(/:root[^{]*\{[^}]*\}/g, "");
     const COLOUR = /#[0-9a-f]{3,8}\b|\b(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch)\(/i;
     expect(rest).not.toMatch(COLOUR);
     expect(rest).not.toMatch(/:\s*(?:white|black|red|blue|green|gray|grey|purple)\b/i);

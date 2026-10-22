@@ -12,6 +12,7 @@ import {
   newestFirst,
   saveJobPostAndCv,
 } from "../services/applications.js";
+import { setTheme } from "../services/accounts.js";
 import { addCv, deleteCv, getCv, listCvs } from "../services/cvs.js";
 import { getPrep, makePrep } from "../services/prep.js";
 import { followUps, thisWeek } from "../services/schedule.js";
@@ -149,4 +150,14 @@ webRouter.post("/cvs/:id/delete", (req, res) => {
     deleteCv(req.user.id, Number(req.params.id));
     res.redirect(303, "/cvs");
   });
+});
+
+// F6 · Settings: Auto, Light or Dark, saved on the account.
+webRouter.get("/settings", (req, res) => {
+  res.render("settings", { theme: req.user.theme, saved: req.query.saved === "1", ...helpers });
+});
+
+webRouter.post("/settings", (req, res) => {
+  setTheme(req.user.id, req.body?.theme);
+  res.redirect(303, "/settings?saved=1");
 });
