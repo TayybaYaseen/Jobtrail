@@ -1,0 +1,29 @@
+<%- include("partials/header", { title: "Referrals · JobTrail" }) %>
+<h1>Referrals</h1>
+<p class="muted">Who referred you, and whether you've thanked them. Add a referral on an application's page.</p>
+
+<% if (error) { %><p class="error" role="alert"><%= error %></p><% } %>
+
+<% if (referrals.length === 0) { %>
+<p class="muted">No referrals yet.</p>
+<% } else { %>
+<ul class="week-list">
+  <% for (const app of referrals) { %>
+  <li class="referral-row">
+    <div>
+      <h2><%= app.referrer.name %></h2>
+      <p><a href="/applications/<%= app.id %>"><%= app.company %></a> · <%= stageLabel(app.stage) %></p>
+      <% if (app.referrer.how || app.referrer.contact) { %><p class="muted"><%= [app.referrer.how, app.referrer.contact].filter(Boolean).join(" · ") %></p><% } %>
+      <p class="muted"><%= app.referrer.thankedOn ? `Thanked ${dayMonth(app.referrer.thankedOn)}` : "Not thanked yet" %></p>
+    </div>
+    <form method="post" action="/applications/<%= app.id %>/thanked">
+      <input type="hidden" name="back" value="/referrals">
+      <button class="secondary">Thanked</button>
+    </form>
+  </li>
+  <% } %>
+</ul>
+<% } %>
+</main>
+</body>
+</html>

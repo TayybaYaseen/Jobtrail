@@ -105,6 +105,16 @@ On an application's page, note the advertised monthly range in rupees
 is kept but hidden, and comes back if the stage returns to Offer. An offer's
 deadline is its **Next step date**.
 
+## Referrals
+
+On an application's page, note who referred you under **Referred by**: their
+name, and if you like how you know them and a contact. The card then says
+"Referred by Ahmed Khan". **Referrals** lists every referral with its company,
+stage and whether you've thanked them, not-yet-thanked first. Tap **Thanked**
+when you have. When a referred application reaches Interview, Offer or
+Rejected and you haven't thanked them since, **This Week** reminds you under
+**Say thanks**: "Tell Ahmed Khan about Ravi Systems: you reached Interview."
+
 ## Dark mode
 
 **Settings** has a theme: **Auto** (the default) follows your phone or

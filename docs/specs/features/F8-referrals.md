@@ -1,6 +1,6 @@
 # F8 · Referrals
 
-**Status:** draft · **Suggested verdict:** later
+**Status:** Approved · **Suggested verdict:** later
 **Brief:** [00-product-brief.md](../00-product-brief.md) · **Flow:** adding an application, after an outcome
 **Wishlist:** 11 (Referrals: track who referred you, so you can thank them)
 **Needs:** F1, F3 (the application page)
@@ -56,11 +56,12 @@ who help me.
 
 ## Open questions
 
-- [ ] Should "how I know them" be a fixed list (senior, teacher, family,
+- [x] Should "how I know them" be a fixed list (senior, teacher, family,
       colleague) or free text? (Proposal: free text.)
+      **Answer:** Free text, as proposed. It's optional.
 
 ## Done means
 
-- [ ] Every acceptance criterion has a passing test.
-- [ ] Nothing from "Out of scope" was built.
-- [ ] `npm test` and `npm run lint` pass.
+- [x] Every acceptance criterion has a passing test.
+- [x] Nothing from "Out of scope" was built.
+- [x] `npm test` and `npm run lint` pass.

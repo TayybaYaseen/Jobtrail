@@ -46,6 +46,14 @@ export function toApplication(record) {
     salaryMin: record.salary_min ?? null,
     salaryMax: record.salary_max ?? null,
     salaryOffered: record.salary_offered ?? null,
+    referrer: record.referrer_name
+      ? {
+          name: record.referrer_name,
+          how: record.referrer_how ?? null,
+          contact: record.referrer_contact ?? null,
+          thankedOn: record.referrer_thanked_on ? parseIsoDate(record.referrer_thanked_on) : null,
+        }
+      : null,
   });
 }
 
