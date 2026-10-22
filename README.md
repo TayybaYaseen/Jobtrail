@@ -95,6 +95,16 @@ API. To check the prompt against the five example job posts and CVs in
 ANTHROPIC_API_KEY=sk-ant-... npm run eval:prep
 ```
 
+## Dark mode
+
+**Settings** has a theme: **Auto** (the default) follows your phone or
+computer, or pick **Light** or **Dark**. It's saved on your account, so every
+device you log in from uses it. Log in and Sign up always follow the device.
+The server puts the theme on `<html data-theme="…">` in the page it sends,
+so there's no white flash first, and printing is always light. Both themes'
+colours are the variables at the top of `public/styles.css`; the contrast
+of each text and background pair is checked by `npm test`.
+
 ## API
 
 - `GET /api/applications`
