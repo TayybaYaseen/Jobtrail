@@ -631,3 +631,35 @@ form.stacked-wide {
 .referral-row form {
   margin: 0;
 }
+
+/* Companies (F9) */
+
+.company-panel h2 {
+  margin-bottom: 0.5rem;
+}
+
+.company-preview {
+  margin: 0;
+  white-space: pre-wrap; /* keeps the notes' own line breaks */
+}
+
+.company-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+}
+
+.company-row a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  font-weight: 600;
+}
+
+.company-apps a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+}

@@ -1,0 +1,19 @@
+<%- include("partials/header", { title: "Companies · JobTrail" }) %>
+<h1>Companies</h1>
+<p class="muted">Every company you've applied to. Open one to keep notes on it: culture, who interviewed you, how long they take to reply.</p>
+
+<% if (companies.length === 0) { %>
+<p class="muted">No companies yet. Add an application first.</p>
+<% } else { %>
+<ul class="week-list">
+  <% for (const c of companies) { %>
+  <li class="company-row">
+    <a href="/companies/<%= c.slug %>"><%= c.name %></a>
+    <span class="muted"><%= c.apps.length %> <%= c.apps.length === 1 ? "application" : "applications" %></span>
+  </li>
+  <% } %>
+</ul>
+<% } %>
+</main>
+</body>
+</html>

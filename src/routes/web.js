@@ -25,6 +25,7 @@ import {
   saveSalary,
 } from "../services/applications.js";
 import { setTheme } from "../services/accounts.js";
+import { companyKey, companySlug, getCompany, listCompanies, notesFor, preview, saveNotes } from "../services/companies.js";
 import { addCv, deleteCv, getCv, listCvs } from "../services/cvs.js";
 import { getPrep, makePrep } from "../services/prep.js";
 import { markThanked, parseReferrer, referrals, saveReferrer, thankYous } from "../services/referrals.js";
@@ -34,6 +35,12 @@ import { today } from "../settings.js";
 export const webRouter = Router();
 
 const helpers = { dayMonth, describeOffer, longDate, niceDate, salaryRange, stageLabel, toIso };
+
+/** The application page's company panel: its address, and my notes on it (or null). */
+function companyPanel(userId, app) {
+  const key = companyKey(app.company);
+  return { slug: companySlug(key), notes: notesFor(userId, key) };
+}
 
 /** What the salary fields show: the saved numbers, or "" when there's none. */
 const salaryFields = (app) => ({
@@ -86,6 +93,8 @@ webRouter.get("/applications/:id", (req, res) => {
     cvId: app.cv?.id ?? null,
     ...salaryFields(app),
     ...referrerFields(app),
+    company: companyPanel(req.user.id, app),
+    preview,
     saved: req.query.saved === "1",
     error: null,
     ...helpers,
@@ -101,6 +110,8 @@ webRouter.post("/applications/:id", (req, res) => {
   const hasReferrer = [referrer_name, referrer_how, referrer_contact].some((v) => v !== undefined);
   const data = () => ({
     ...getPrep(req.user.id, id), // app, prep, changed, cantPrep
+    company: companyPanel(req.user.id, getApplication(req.user.id, id)),
+    preview,
     cvs: listCvs(req.user.id),
     jobPost: job_post,
     cvId: cvIdFrom(cv_id),
@@ -227,4 +238,24 @@ webRouter.post("/applications/:id/thanked", (req, res) => {
     return THANKED_FROM[back](req, res.status(404), "That referral no longer exists.");
   }
   res.redirect(303, back);
+});
+
+// F9 · Companies: my notes on each company I've applied to, and its applications.
+webRouter.get("/companies", (req, res) => {
+  res.render("companies", { companies: listCompanies(req.user.id), ...helpers });
+});
+
+webRouter.get("/companies/:slug", (req, res) => {
+  const company = getCompany(req.user.id, req.params.slug);
+  res.render("company", { company, text: company.notes?.text ?? "", saved: req.query.saved === "1", error: null, ...helpers });
+});
+
+webRouter.post("/companies/:slug", (req, res) => {
+  const { slug } = req.params;
+  const { notes = "" } = req.body ?? {};
+  const data = () => ({ company: getCompany(req.user.id, slug), text: notes, saved: false });
+  renderOnAppError(res, "company", data, () => {
+    saveNotes(req.user.id, slug, notes);
+    res.redirect(303, `/companies/${slug}?saved=1`);
+  });
 });

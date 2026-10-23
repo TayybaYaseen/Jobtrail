@@ -69,6 +69,16 @@ CREATE TABLE IF NOT EXISTS prep_usage (
   day     TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS prep_usage_user_day ON prep_usage(user_id, day);
+
+-- F9: what I've learned about a company, one row per user and company.
+-- company_key is the name trimmed and lowercased. Kept when no applications are left.
+CREATE TABLE IF NOT EXISTS company_notes (
+  user_id     INTEGER NOT NULL REFERENCES users(id),
+  company_key TEXT NOT NULL,
+  notes       TEXT NOT NULL,
+  updated_on  TEXT NOT NULL,
+  PRIMARY KEY (user_id, company_key)
+);
 `;
 
 // Columns added after a table first shipped. Older databases get them when
