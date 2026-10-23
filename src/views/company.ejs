@@ -1,0 +1,23 @@
+<%- include("partials/header", { title: `${company.name} · JobTrail` }) %>
+<p class="back"><a href="/companies">← All companies</a></p>
+<h1><%= company.name %></h1>
+
+<% if (error) { %><p class="error" role="alert"><%= error %></p><% } %>
+<% if (saved) { %><p class="saved" role="status">Saved</p><% } %>
+
+<form method="post" action="/companies/<%= company.slug %>" class="panel stacked-wide">
+  <label>Your notes on <%= company.name %> <textarea name="notes" rows="10">
+<%= text %></textarea></label>
+  <p class="hint muted"><% if (company.notes) { %>Updated <%= longDate(company.notes.updatedOn) %><% } else { %>Only you can see these.<% } %></p>
+  <button>Save</button>
+</form>
+
+<h2 class="section-heading">Your applications</h2>
+<ul class="week-list company-apps">
+  <% for (const app of company.apps) { %>
+  <li><a href="/applications/<%= app.id %>"><%= app.role %></a> · <%= stageLabel(app.stage) %> · applied <%= niceDate(app.appliedOn) %></li>
+  <% } %>
+</ul>
+</main>
+</body>
+</html>

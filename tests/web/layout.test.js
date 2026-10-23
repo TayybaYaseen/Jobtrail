@@ -8,6 +8,7 @@ import { describe, expect, test } from "vitest";
 import { app } from "../../src/app.js";
 import { niceDate, stageLabel } from "../../src/formatting.js";
 import { listApplications } from "../../src/services/applications.js";
+import { companySlug } from "../../src/services/companies.js";
 import { addCv } from "../../src/services/cvs.js";
 import { ROOT } from "../../src/settings.js";
 import { logIn, testUserId } from "../helpers.js";
@@ -23,6 +24,8 @@ async function allPages() {
     "/cvs/:id": (await tab.get(`/cvs/${cv.id}`)).text,
     "/settings": (await tab.get("/settings")).text,
     "/referrals": (await tab.get("/referrals")).text,
+    "/companies": (await tab.get("/companies")).text,
+    "/companies/:slug": (await tab.get(`/companies/${companySlug("ravi systems")}`)).text,
     "/applications/:id": (await tab.get("/applications/3")).text,
     "/login": (await request(app).get("/login")).text,
     "/signup": (await request(app).get("/signup")).text,

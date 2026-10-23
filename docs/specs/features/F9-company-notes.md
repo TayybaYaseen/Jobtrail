@@ -1,6 +1,6 @@
 # F9 · Company notes
 
-**Status:** draft · **Suggested verdict:** later
+**Status:** approved · **Suggested verdict:** later
 **Brief:** [00-product-brief.md](../00-product-brief.md) · **Flow:** preparing for an interview
 **Wishlist:** 14 (Company notes: what you learned about each company)
 **Needs:** F1, F3 (the application page links to the company)
@@ -53,11 +53,12 @@ so that I see it every time I apply there or prepare for an interview.
 
 ## Open questions
 
-- [ ] Are company notes private, or shared with batchmates? (Proposal:
+- [x] Are company notes private, or shared with batchmates? (Proposal:
       private in this spec. Sharing would be its own spec.)
+      **Answer:** Private, as proposed.
 
 ## Done means
 
-- [ ] Every acceptance criterion has a passing test.
-- [ ] The per-application `notes` field is left as it is.
-- [ ] `npm test` and `npm run lint` pass.
+- [x] Every acceptance criterion has a passing test.
+- [x] The per-application `notes` field is left as it is.
+- [x] `npm test` and `npm run lint` pass.

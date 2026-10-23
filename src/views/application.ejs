@@ -16,6 +16,16 @@
   <dt>CV sent</dt><dd><% if (app.cv) { %><a href="/cvs/<%= app.cv.id %>"><%= app.cv.name %></a><% } else { %>No CV chosen<% } %></dd>
 </dl>
 
+<section class="panel company-panel">
+  <h2>About <%= app.company %></h2>
+  <% if (company.notes) { %>
+  <p class="company-preview"><%= preview(company.notes.text) %></p>
+  <p class="hint"><a href="/companies/<%= company.slug %>">All your notes on <%= app.company %></a></p>
+  <% } else { %>
+  <p class="hint"><a href="/companies/<%= company.slug %>">Add notes about <%= app.company %></a></p>
+  <% } %>
+</section>
+
 <section class="panel prep-panel">
   <h2>Interview prep</h2>
   <% if (prep) { %>
