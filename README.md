@@ -105,6 +105,15 @@ On an application's page, note the advertised monthly range in rupees
 is kept but hidden, and comes back if the stage returns to Offer. An offer's
 deadline is its **Next step date**.
 
+## Companies
+
+**Companies** lists every company you've applied to, A to Z, with how many
+applications each has. Open one to keep notes on it (culture, who interviewed
+you, how long they take to reply) and see all your applications there. Notes
+are private to you, up to 5,000 characters. An application's page shows the
+first 200 characters of its company's notes. "Ravi Systems" and " ravi
+systems " are the same company; "Ravi Systems Ltd." is a different one.
+
 ## Referrals
 
 On an application's page, note who referred you under **Referred by**: their
