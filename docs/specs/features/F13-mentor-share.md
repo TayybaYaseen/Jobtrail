@@ -1,6 +1,6 @@
 # F13 · Read-only link for a mentor
 
-**Status:** draft · **Suggested verdict:** later
+**Status:** Approved · **Suggested verdict:** later
 **Brief:** [00-product-brief.md](../00-product-brief.md) · **Flow:** sharing progress
 **Wishlist:** 12 (Share with a mentor: a read-only link for a mentor or a parent)
 **Needs:** F1 (whose data to share), F2 (mentors and parents open it on their phones)
@@ -57,12 +57,16 @@ and their progress, so that they can advise me without me writing updates.
 
 ## Open questions
 
-- [ ] Should the owner see when the link was last opened? (Proposal: later.)
-- [ ] Is the user's name OK to show, or just "A JobTrail user"?
+- [x] Should the owner see when the link was last opened? (Proposal: later.)
+      **Answer:** Later, as proposed. Not in this spec.
+- [x] Is the user's name OK to show, or just "A JobTrail user"?
+      **Answer:** Accounts have no name, only an email. The Sharing page has
+      an optional "Name shown on your link" (60 characters at most). Left
+      blank, the page shows "A JobTrail user". The email is never shown.
 
 ## Done means
 
-- [ ] Every acceptance criterion has a passing test, including one that
+- [x] Every acceptance criterion has a passing test, including one that
       checks every private field is missing from the shared HTML.
-- [ ] Tokens are compared in constant time.
-- [ ] `npm test` and `npm run lint` pass.
+- [x] Tokens are compared in constant time.
+- [x] `npm test` and `npm run lint` pass.
