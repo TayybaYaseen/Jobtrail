@@ -79,6 +79,24 @@ CREATE TABLE IF NOT EXISTS company_notes (
   updated_on  TEXT NOT NULL,
   PRIMARY KEY (user_id, company_key)
 );
+
+-- F13: read-only links for a mentor. One link on at a time per user. Turned-off
+-- links are kept, so opening one says it was turned off. A token is found by its SHA-256.
+CREATE TABLE IF NOT EXISTS share_links (
+  token_hash    TEXT PRIMARY KEY,
+  token         TEXT NOT NULL,
+  user_id       INTEGER NOT NULL REFERENCES users(id),
+  created_on    TEXT NOT NULL,
+  turned_off_on TEXT
+);
+CREATE UNIQUE INDEX IF NOT EXISTS share_links_on ON share_links(user_id) WHERE turned_off_on IS NULL;
+
+-- One row per request to a share link, for the rate limit. Rows older than a minute are deleted.
+CREATE TABLE IF NOT EXISTS share_hits (
+  ip TEXT NOT NULL,
+  at INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS share_hits_ip ON share_hits(ip, at);
 `;
 
 // Columns added after a table first shipped. Older databases get them when
@@ -86,6 +104,7 @@ CREATE TABLE IF NOT EXISTS company_notes (
 const ADDED_COLUMNS = {
   users: {
     theme: "TEXT", // "light" or "dark"; null (or anything else) means Auto, which follows the device
+    display_name: "TEXT", // F13: the name on my share link; null means "A JobTrail user"
   },
   applications: {
     job_post: "TEXT",

@@ -682,3 +682,24 @@ form.stacked-wide {
   align-items: center;
   min-height: 2.75rem;
 }
+
+/* Sharing (F13) */
+
+.share-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.share-panel h2,
+.share-panel p,
+.share-panel form {
+  margin: 0;
+}
+
+.share-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+}
