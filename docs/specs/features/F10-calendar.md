@@ -1,6 +1,6 @@
 # F10 · Interviews in Google Calendar
 
-**Status:** draft · **Suggested verdict:** later (first pick after v1)
+**Status:** Approved · **Suggested verdict:** later (first pick after v1)
 **Brief:** [00-product-brief.md](../00-product-brief.md) · **Flow:** after scheduling an interview
 **Wishlist:** 13 (Calendar: put interviews in Google Calendar)
 **Needs:** F1, F2
@@ -61,7 +61,9 @@ in one tap, so that I get my calendar's usual reminders.
 
 ## Done means
 
-- [ ] Every acceptance criterion has a passing test, using `src/dates.js`
+- [x] Every acceptance criterion has a passing test, using `src/dates.js`
       for every date, never the local time zone.
 - [ ] The `.ics` file opens in Google Calendar (checked by hand).
-- [ ] `npm test` and `npm run lint` pass.
+      (Parsed with Mozilla's ical.js: one all-day event, the right title,
+      dates and UID. Importing into Google Calendar needs a person.)
+- [x] `npm test` and `npm run lint` pass.

@@ -25,6 +25,7 @@ import {
   saveSalary,
 } from "../services/applications.js";
 import { setTheme } from "../services/accounts.js";
+import { calendarEvent, googleCalendarUrl, icsFile, icsFileName } from "../services/calendar.js";
 import { companyKey, companySlug, getCompany, listCompanies, notesFor, preview, saveNotes } from "../services/companies.js";
 import { addCv, deleteCv, getCv, listCvs } from "../services/cvs.js";
 import { getPrep, makePrep } from "../services/prep.js";
@@ -35,6 +36,12 @@ import { today } from "../settings.js";
 export const webRouter = Router();
 
 const helpers = { dayMonth, describeOffer, longDate, niceDate, salaryRange, stageLabel, toIso };
+
+/** The calendar links for an application's next step, or null when it has none (F10). */
+function calendarLinks(app) {
+  const event = calendarEvent(app);
+  return event ? { google: googleCalendarUrl(event), ics: `/applications/${app.id}/calendar.ics` } : null;
+}
 
 /** The application page's company panel: its address, and my notes on it (or null). */
 function companyPanel(userId, app) {
@@ -95,6 +102,7 @@ webRouter.get("/applications/:id", (req, res) => {
     ...referrerFields(app),
     company: companyPanel(req.user.id, app),
     preview,
+    calendar: calendarLinks(app),
     saved: req.query.saved === "1",
     error: null,
     ...helpers,
@@ -112,6 +120,7 @@ webRouter.post("/applications/:id", (req, res) => {
     ...getPrep(req.user.id, id), // app, prep, changed, cantPrep
     company: companyPanel(req.user.id, getApplication(req.user.id, id)),
     preview,
+    calendar: calendarLinks(getApplication(req.user.id, id)),
     cvs: listCvs(req.user.id),
     jobPost: job_post,
     cvId: cvIdFrom(cv_id),
@@ -132,6 +141,16 @@ webRouter.post("/applications/:id", (req, res) => {
     if (referrer !== undefined) saveReferrer(req.user.id, id, referrer);
     res.redirect(303, `/applications/${id}?saved=1`);
   });
+});
+
+// F10 · The next step as an .ics file. 404 for someone else's application, or with no next step.
+webRouter.get("/applications/:id/calendar.ics", (req, res) => {
+  const app = getApplication(req.user.id, Number(req.params.id));
+  const event = calendarEvent(app);
+  if (!event) throw new AppError("NO_NEXT_STEP", "This application has no next step to add.", 404);
+  res.type("text/calendar; charset=utf-8");
+  res.attachment(icsFileName(app));
+  res.send(icsFile(event));
 });
 
 webRouter.post("/applications/:id/stage", (req, res) => {
@@ -164,7 +183,7 @@ function renderThisWeek(req, res, error = null) {
   const apps = listApplications(req.user.id);
   res.render("this-week", {
     today: now,
-    lines: thisWeek(apps, now).map((a) => ({ id: a.id, text: describeNextStep(a, now) })),
+    lines: thisWeek(apps, now).map((a) => ({ id: a.id, text: describeNextStep(a, now), calendar: calendarLinks(a) })),
     followUps: followUps(apps, now).map((f) => ({ id: f.app.id, text: describeFollowUp(f) })),
     thankYous: thankYous(apps).map((a) => ({ id: a.id, text: describeThankYou(a) })),
     error,

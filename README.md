@@ -71,6 +71,16 @@ npm run digest -- --email hira@example.com
 `npm run dev:demo` and `npm run digest:demo -- --email …` pin today to 19
 October 2026 (see `demo.env`), so the sample data always has a week ahead.
 
+## Calendar
+
+An application at Screening, Interview or Offer with a next-step date has
+**Add to Google Calendar** and **Download .ics** links, on its page and on
+This Week. Both make an all-day event, such as "Interview · Ravi Systems
+(Associate Software Engineer)" or "Offer deadline · …". The `.ics` works
+with Google, Apple and Outlook calendars, and keeps the same `UID` for an
+application, so adding it again after the date changes updates the event.
+No Google sign-in is needed.
+
 ## Interview prep
 
 On an application with a job post and the CV you sent, tap **Prepare for
