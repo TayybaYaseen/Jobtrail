@@ -1,6 +1,6 @@
 # F12 · Stats: applications to interviews
 
-**Status:** draft · **Suggested verdict:** later
+**Status:** Approved · **Suggested verdict:** later
 **Brief:** [00-product-brief.md](../00-product-brief.md) · **Flow:** reviewing the job hunt
 **Wishlist:** 10 (Stats: how many applications turn into interviews?)
 **Needs:** F1, F11 (rejection reasons and the stage they came at)
