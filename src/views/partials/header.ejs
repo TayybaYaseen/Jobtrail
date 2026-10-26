@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="<%= locals.theme === "light" || locals.theme === "dark" ? locals.theme : "light dark" %>">
   <title><%= title %></title>
+  <% if (locals.noindex) { %><meta name="robots" content="noindex"><% } %>
   <link rel="stylesheet" href="/styles.css">
   <script>
     // Sign up, Log in and Prepare for interview: disable the button while the form
@@ -26,7 +27,7 @@
     <div class="site-nav-inner">
       <span class="brand">JobTrail</span>
       <% if (locals.user) { %>
-      <% for (const [href, label] of [["/", "Applications"], ["/this-week", "This Week"], ["/cvs", "CVs"], ["/companies", "Companies"], ["/referrals", "Referrals"], ["/settings", "Settings"]]) { %>
+      <% for (const [href, label] of [["/", "Applications"], ["/this-week", "This Week"], ["/cvs", "CVs"], ["/companies", "Companies"], ["/referrals", "Referrals"], ["/sharing", "Sharing"], ["/settings", "Settings"]]) { %>
       <a href="<%= href %>"<% if (locals.currentPath === href) { %> aria-current="page"<% } %>><%= label %></a>
       <% } %>
       <form method="post" action="/logout"><button class="secondary">Log out</button></form>

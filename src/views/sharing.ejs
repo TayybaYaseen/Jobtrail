@@ -1,0 +1,52 @@
+<%- include("partials/header", { title: "Sharing · JobTrail" }) %>
+<h1>Sharing</h1>
+<p class="muted">Send a mentor or a parent a link to your applications. They see each one's company, role, stage and dates, without an account, and can't change anything. Your notes, job posts, CVs, salaries, referrals, company notes and interview prep stay private.</p>
+
+<% if (notice) { %><p class="saved" role="status"><%= notice %></p><% } %>
+<% if (error) { %><p class="error" role="alert"><%= error %></p><% } %>
+
+<section class="panel share-panel">
+  <h2>Your link</h2>
+  <% if (link) { %>
+  <label>Link for your mentor <input id="share-link" value="<%= link %>" readonly></label>
+  <div class="share-actions">
+    <button type="button" data-copy="share-link">Copy</button>
+    <span class="muted" data-copied role="status" hidden>Copied</span>
+  </div>
+  <form method="post" action="/sharing/link" class="share-actions">
+    <button class="secondary">Create new link</button>
+    <span class="hint">The old link stops working.</span>
+  </form>
+  <form method="post" action="/sharing/off">
+    <button class="secondary">Turn off link</button>
+  </form>
+  <% } else { %>
+  <p class="muted">You have no link turned on.</p>
+  <form method="post" action="/sharing/link">
+    <button>Create link</button>
+  </form>
+  <% } %>
+</section>
+
+<form method="post" action="/sharing/name" class="panel stacked">
+  <label>Name shown on your link <input name="name" value="<%= name %>" maxlength="<%= maxName %>"></label>
+  <p class="hint">Leave it blank to show "<%= noName %>". Your email is never shown.</p>
+  <button>Save</button>
+</form>
+
+<script>
+  // Copy puts the link on the clipboard. Without JavaScript, select the link in the field instead.
+  document.querySelector("[data-copy]")?.addEventListener("click", async (e) => {
+    const field = document.getElementById(e.currentTarget.dataset.copy);
+    try {
+      await navigator.clipboard.writeText(field.value);
+    } catch {
+      field.select();
+      document.execCommand("copy");
+    }
+    document.querySelector("[data-copied]").hidden = false;
+  });
+</script>
+</main>
+</body>
+</html>

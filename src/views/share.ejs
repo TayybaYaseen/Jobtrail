@@ -1,0 +1,34 @@
+<%# F13: the read-only page a mentor opens. No nav links, forms or buttons, even when the viewer is logged in. %>
+<%- include("partials/header", { title: message ? "JobTrail" : `${name} · JobTrail`, user: null, theme: "auto", noindex: true }) %>
+<% if (message) { %>
+<h1><%= message %></h1>
+<p class="muted">Ask the person who sent it for a new link.</p>
+<% } else { %>
+<h1><%= name %></h1>
+<p class="muted">Job applications on JobTrail, newest first. This page is read-only.</p>
+
+<% if (apps.length === 0) { %>
+<p class="muted">No applications yet.</p>
+<% } else { %>
+<ul class="app-list">
+  <% for (const app of apps) { %>
+  <li class="app-card">
+    <div class="app-card-head">
+      <div>
+        <h2><%= app.company %></h2>
+        <p class="role"><%= app.role %></p>
+      </div>
+      <span class="stage"><%= stageLabel(app.stage) %></span>
+    </div>
+    <dl class="dates">
+      <dt>Applied</dt><dd><%= niceDate(app.appliedOn) %></dd>
+      <dt>Next step</dt><dd><%= app.nextStepOn ? niceDate(app.nextStepOn) : "—" %></dd>
+    </dl>
+  </li>
+  <% } %>
+</ul>
+<% } %>
+<% } %>
+</main>
+</body>
+</html>

@@ -134,6 +134,18 @@ when you have. When a referred application reaches Interview, Offer or
 Rejected and you haven't thanked them since, **This Week** reminds you under
 **Say thanks**: "Tell Ahmed Khan about Ravi Systems: you reached Interview."
 
+## Sharing with a mentor
+
+**Sharing** makes a read-only link, like `/share/…`, for a mentor or a parent.
+They don't need an account. They see your name and each application's
+company, role, stage, applied date and next step, newest first, and nothing
+else: no notes, job posts, CVs, salaries, referrals, company notes or
+interview prep. They can't change anything. The name is optional (blank shows
+"A JobTrail user"), and your email is never shown. You have one link at a
+time: **Create new link** turns the old one off, and **Turn off link** turns
+it off with no new one. A turned-off link says so. Share links allow 30
+requests a minute per IP, and search engines are asked not to index them.
+
 ## Dark mode
 
 **Settings** has a theme: **Auto** (the default) follows your phone or

@@ -30,6 +30,7 @@ import { companyKey, companySlug, getCompany, listCompanies, notesFor, preview, 
 import { addCv, deleteCv, getCv, listCvs } from "../services/cvs.js";
 import { getPrep, makePrep } from "../services/prep.js";
 import { markThanked, parseReferrer, referrals, saveReferrer, thankYous } from "../services/referrals.js";
+import { createLink, currentToken, displayName, MAX_NAME_LENGTH, NO_NAME, saveDisplayName, turnOffLink } from "../services/sharing.js";
 import { followUps, thisWeek } from "../services/schedule.js";
 import { today } from "../settings.js";
 
@@ -277,4 +278,39 @@ webRouter.post("/companies/:slug", (req, res) => {
     saveNotes(req.user.id, slug, notes);
     res.redirect(303, `/companies/${slug}?saved=1`);
   });
+});
+
+// F13 · Sharing: one read-only link for a mentor or a parent, and the name it shows.
+const SHARING_NOTICES = { saved: "Saved", made: "Link made.", off: "Link turned off." };
+
+function sharingData(req) {
+  const token = currentToken(req.user.id);
+  return {
+    link: token ? `${req.protocol}://${req.get("host")}/share/${token}` : null,
+    noName: NO_NAME,
+    maxName: MAX_NAME_LENGTH,
+    notice: SHARING_NOTICES[req.query.done] ?? null,
+  };
+}
+
+webRouter.get("/sharing", (req, res) => {
+  res.render("sharing", { ...sharingData(req), name: displayName(req.user.id), error: null, ...helpers });
+});
+
+webRouter.post("/sharing/name", (req, res) => {
+  const { name = "" } = req.body ?? {};
+  renderOnAppError(res, "sharing", () => ({ ...sharingData(req), notice: null, name }), () => {
+    saveDisplayName(req.user.id, name);
+    res.redirect(303, "/sharing?done=saved");
+  });
+});
+
+webRouter.post("/sharing/link", (req, res) => {
+  createLink(req.user.id);
+  res.redirect(303, "/sharing?done=made");
+});
+
+webRouter.post("/sharing/off", (req, res) => {
+  turnOffLink(req.user.id);
+  res.redirect(303, "/sharing?done=off");
 });

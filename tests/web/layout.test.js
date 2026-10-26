@@ -17,6 +17,8 @@ import { logIn, testUserId } from "../helpers.js";
 async function allPages() {
   const cv = addCv(testUserId(), "CV v3 – backend", "My CV");
   const tab = await logIn();
+  await tab.post("/sharing/link");
+  const shareLink = new URL((await tab.get("/sharing")).text.match(/id="share-link" value="([^"]+)"/)[1]).pathname;
   return {
     "/": (await tab.get("/")).text,
     "/this-week": (await tab.get("/this-week")).text,
@@ -27,6 +29,8 @@ async function allPages() {
     "/companies": (await tab.get("/companies")).text,
     "/companies/:slug": (await tab.get(`/companies/${companySlug("ravi systems")}`)).text,
     "/applications/:id": (await tab.get("/applications/3")).text,
+    "/sharing": (await tab.get("/sharing")).text,
+    "/share/:token": (await request(app).get(shareLink)).text,
     "/login": (await request(app).get("/login")).text,
     "/signup": (await request(app).get("/signup")).text,
   };
