@@ -1,6 +1,6 @@
 # F14 · Import applications from Gmail
 
-**Status:** draft · **Suggested verdict:** never, for now
+**Status:** Approved · **Suggested verdict:** never, for now
 **Brief:** [00-product-brief.md](../00-product-brief.md) · **Flow:** adding an application
 **Wishlist:** 6 (Import from email: read application confirmations from Gmail automatically)
 **Needs:** F1 (Google is connected per user), F3 (the application page, for reviewing imports)
