@@ -6,7 +6,17 @@
 
 <ul class="week-list">
   <% if (lines.length === 0) { %><li class="muted">Nothing scheduled this week.</li><% } %>
-  <% for (const line of lines) { %><li><a href="/applications/<%= line.id %>" class="week-link"><%= line.text %></a></li><% } %>
+  <% for (const line of lines) { %>
+  <li>
+    <a href="/applications/<%= line.id %>" class="week-link"><%= line.text %></a>
+    <% if (line.calendar) { %>
+    <p class="calendar-links">
+      <a href="<%= line.calendar.google %>" target="_blank" rel="noopener">Add to Google Calendar</a>
+      <a href="<%= line.calendar.ics %>" download>Download .ics</a>
+    </p>
+    <% } %>
+  </li>
+  <% } %>
 </ul>
 
 <h2 class="section-heading">Follow up</h2>

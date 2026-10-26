@@ -15,6 +15,12 @@
   <% if (describeOffer(app)) { %><dt>Offer</dt><dd><%= describeOffer(app) %></dd><% } %>
   <dt>CV sent</dt><dd><% if (app.cv) { %><a href="/cvs/<%= app.cv.id %>"><%= app.cv.name %></a><% } else { %>No CV chosen<% } %></dd>
 </dl>
+<% if (calendar) { %>
+<p class="calendar-links">
+  <a href="<%= calendar.google %>" target="_blank" rel="noopener">Add to Google Calendar</a>
+  <a href="<%= calendar.ics %>" download>Download .ics</a>
+</p>
+<% } %>
 
 <section class="panel company-panel">
   <h2>About <%= app.company %></h2>

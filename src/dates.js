@@ -16,8 +16,18 @@ export function toIso(date) {
   return date.toISOString().slice(0, 10);
 }
 
+/** Date -> "20261019", the form calendars use for an all-day date */
+export function toBasicDate(date) {
+  return toIso(date).replaceAll("-", "");
+}
+
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 export function daysUntil(day, today) {
   return Math.round((day.getTime() - today.getTime()) / MS_PER_DAY);
+}
+
+/** The date n days later (or earlier, for a negative n). 31 Dec + 1 is 1 Jan. */
+export function addDays(date, n) {
+  return new Date(date.getTime() + n * MS_PER_DAY);
 }
